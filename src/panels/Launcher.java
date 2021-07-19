@@ -49,15 +49,13 @@ public class Launcher extends JPanel {
                 JFrame f = new JFrame();
                 if (server.isSelected()) {
                     f.setTitle("JavaNO - Server");
-                    ServerPanel sp = null;
                     try {
-                        sp = new ServerPanel();
+                        ServerPanel sp = new ServerPanel();
                         sp.setPreferredSize(new Dimension(1400, 800));
                         f.setContentPane(sp);
                     } catch (IOException err) {
                         err.printStackTrace();
                     }
-
                 }else {
                     f.setTitle("JavaNO - Client");
                     ClientPanel cp = new ClientPanel();

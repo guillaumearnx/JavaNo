@@ -17,6 +17,7 @@ public class ServerPanel extends JPanel implements Observer {
         this.setLayout(new BorderLayout());
         System.out.println("haha");
         p = new Partie();
+        p.addObserver(this);
         repaint();
     }
 
