@@ -2,23 +2,25 @@ package game;
 
 import game.utils.Carte;
 import network.Client;
+import network.Server;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
+import java.io.IOException;
+import java.util.*;
 
-public class Partie {
+public class Partie extends Observable {
+
     private ArrayList<Carte> cartes;
     private final ArrayList<Joueur> joueurs;
+    private Server server;
 
-    public Partie() {
-
+    public Partie() throws IOException {
+        server = new Server();
+        joueurs = new ArrayList<Joueur>();
         cartes = composer();
         Collections.shuffle(cartes);
         distribuer();
-    }
+        }
 
     private void distribuer(){
         int indice = 0;
@@ -63,5 +65,9 @@ public class Partie {
                 add(new Carte(Color.black, 33));
             }
         }};
+    }
+
+    public int getConnectes(){
+        return joueurs.size();
     }
 }

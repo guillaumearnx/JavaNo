@@ -8,32 +8,28 @@ import java.util.Scanner;
 
 public class Server {
 
-    public static void main(String[] args) throws IOException {
+    public Server() {
         final int PORT = 6587;
-        ServerSocket serverSocket = new ServerSocket(PORT);
-        System.out.println("Server started on port " + PORT + " ...");
-        System.out.println("Wainting for clients ...");
-        while (true) {
-            Socket socket = serverSocket.accept();
-            Thread t = new Thread() {
-                @Override
-                public void run() {
-                    try (
-                            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                            Scanner in = new Scanner(socket.getInputStream());
-                    ) {
-                        while (in.hasNextLine()) {
-                            String input = in.nextLine();
-                            if (input.equalsIgnoreCase("exit"))
-                                break;
-                            System.out.println("Received from client : " + input);
-                            out.println("Im the server and i receive " + input);
-                        }
-                    } catch (IOException ignored) {
+        Thread t1 = new Thread(() -> {
+            try {
+                ServerSocket serverSocket = new ServerSocket(PORT);
+                System.out.println("Server started on port " + PORT + " ...");
+                System.out.println("Waiting for clients ...");
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    Scanner in = new Scanner(socket.getInputStream());
+                    while (in.hasNextLine()) {
+                        String input = in.nextLine();
+                        if (input.equalsIgnoreCase("exit"))
+                            break;
+                        System.out.println("Received from client : " + input);
+                        out.println("Im the server and i receive " + input);
                     }
                 }
-            };
-            t.start();
-        }
+            } catch (IOException ignored) {
+            }
+        });
+        t1.start();
     }
 }
