@@ -15,7 +15,7 @@ public class Partie extends Observable {
     private final ArrayList<Joueur> joueurs;
 
     public Partie() {
-        new Server();
+        System.out.println("Partie cree");
         joueurs = new ArrayList<Joueur>();
         cartes = composer();
         Collections.shuffle(cartes);
@@ -73,11 +73,19 @@ public class Partie extends Observable {
 
     public void ajouterJoueur(String inetAddress) {
         joueurs.add(new Joueur(inetAddress));
+        System.out.println("J'ajoute un joueur .... | nb -> "+joueurs.size());
         setChanged();
         notifyObservers();
     }
 
     public ArrayList<Joueur> getJoueurs() {
         return joueurs;
+    }
+
+
+    public void supprimerJoueur(String valueOf) {
+        joueurs.removeIf(player -> (player.nom.equals(valueOf)));
+        setChanged();
+        notifyObservers();
     }
 }

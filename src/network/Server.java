@@ -1,104 +1,113 @@
 package network;
 
+import game.Partie;
+import panels.ServerPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Server {
 
-    private ArrayList<ThreadServer> threadlist;
+    private Partie p;
 
     public Server() {
-
-        threadlist = new ArrayList<ThreadServer>();
+        p = new Partie();
 
         final int PORT = 6587;
-        try(ServerSocket serverSocket = new ServerSocket(PORT)){
-            System.out.println("Serveur écoute sur le port : "+serverSocket.getLocalPort());
-            Socket socket = serverSocket.accept();
-            ThreadServer thread = new ThreadServer(socket, threadlist);
-            threadlist.add(thread);
-            thread.start();
-            /*new Thread(()->{
-                try{
 
-                }catch (IOException e){
-                    System.out.println("Error when creating thread ... : "+e);
-                    System.exit(-1);
-                }
-            }).start();*/
-        }catch (IOException e){
-            System.err.println("Creation de socket impossible : "+e);
-            System.exit(-1);
-        }
 
-        /*try{
-            Socket client;
-            while (true){
-                client = serverSocket.accept();
-                ThreadClient t = new ThreadClient(client);
-                t.start();
-            }
-        }catch (IOException e){
-            System.err.println("Erreur pendant l'attente d'une connexion : "+e);
-            System.exit(-1);
-        }
-
-        try{
-            serverSocket.close();
-        }catch (IOException e){
-            System.err.println("Erreur lors de la fermeture du socket : "+e);
-            System.exit(-1);
-        }
-
-        /*try {
+        try {
             ServerSocket serverSocket = new ServerSocket(PORT);
-            System.out.println("Server started on port " + PORT + " ...");
-            System.out.println("Waiting for clients ...");
-            while (true){
-                Socket client = serverSocket.accept();
-                String clientIP = client.getInetAddress().toString() ;
-                int clientPort = client.getPort();
-                System.out.format("[Serveur] : Arrivée du client IP %s sur le port %d\n", clientIP, clientPort);
-                System.out.format("[Serveur ]: Creation du thread T_%d\n" , clientPort);
-                new Thread( new ThreadClient(client , "T_" +clientPort)).start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    }
-        
+            System.out.println("Serveur écoute sur le port : " + serverSocket.getLocalPort());
 
-
-
-
-
-
-
-
-
-        /*Thread t1 = new Thread(() -> {
-            try {
+            ServerPanel sp = new ServerPanel(p);
+            p.addObserver(sp);
+            JFrame f = new JFrame();
+            f.setTitle("JavaNO - Server");
+            sp.setPreferredSize(new Dimension(1400, 800));
+            f.setContentPane(sp);
+            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            f.requestFocusInWindow();
+            f.pack();
+            f.setVisible(true);
+            new Thread(() -> {
                 while (true) {
-                    Socket socket = serverSocket.accept();
-                    p.ajouterJoueur(String.valueOf(socket.getInetAddress()));
-                    System.out.println("Client connected : ip : "+socket.getInetAddress());
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    Scanner in = new Scanner(socket.getInputStream());
-                    while (in.hasNextLine()) {
-                        String input = in.nextLine();
-                        if (input.equalsIgnoreCase("exit"))
-                            break;
-                        System.out.println("Received from client : " + input);
-                        out.println("Im the server and i receive " + input);
+                    System.out.println("Created thread");
+                    Socket s = null;
+                    try {
+                        s = serverSocket.accept();
+                        System.out.println("A new client is connected : " + s);
+                        DataInputStream dis = new DataInputStream(s.getInputStream());
+                        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                        p.ajouterJoueur(String.valueOf(s.getInetAddress()));
+
+
+                        System.out.println("Assigning new thread for this client");
+
+                        // create a new thread object
+                        Thread t = new ClientHandler(s, dis, dos, p);
+
+                        // Invoking the start() method
+                        t.start();
+
+                    } catch (Exception e) {
+                        assert s != null;
+                        try {
+                            s.close();
+                        } catch (IOException exception) {
+                            exception.printStackTrace();
+                        }
+                        e.printStackTrace();
                     }
                 }
-            } catch (IOException ignored) {
-            }
-        });
-        t1.start();
-    }*/
 
+            }).start();
+            System.out.println("fini");
+        } catch (IOException exception) {
+            System.out.println("pd");
+        }
+
+    }
+}
+
+class ClientHandler extends Thread {
+
+    DateFormat fordate = new SimpleDateFormat("yyyy/MM/dd");
+    DateFormat fortime = new SimpleDateFormat("hh:mm:ss");
+    final DataInputStream dis;
+    final DataOutputStream dos;
+    final Socket s;
+    final Partie p;
+
+    // Constructor
+    public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos, Partie p) {
+        this.s = s;
+        this.dis = dis;
+        this.dos = dos;
+        this.p = p;
+    }
+
+    @Override
+    public void run() {
+        while (true)
+            try {
+                dos.writeUTF("Test");
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                System.out.println("a pu");
+                p.supprimerJoueur(String.valueOf(s.getInetAddress()));
+                this.stop();
+            }
+    }
 
 }

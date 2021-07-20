@@ -1,5 +1,8 @@
 package panels;
 
+import network.Client;
+import network.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -46,27 +49,22 @@ public class Launcher extends JPanel {
             setFont(font);
             addActionListener(e -> {
                 parent.dispose();
-                JFrame f = new JFrame();
-                if (server.isSelected()) {
-                    f.setTitle("JavaNO - Server");
-                    try {
-                        ServerPanel sp = new ServerPanel();
-                        sp.setPreferredSize(new Dimension(1400, 800));
-                        f.setContentPane(sp);
-                    } catch (IOException err) {
-                        err.printStackTrace();
-                    }
-                }else {
-                    f.setTitle("JavaNO - Client");
-                    ClientPanel cp = new ClientPanel();
-                    cp.setPreferredSize(new Dimension(1400, 800));
-                    f.setContentPane(cp);
-                }
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-                f.requestFocusInWindow();
-                f.pack();
-                f.setVisible(true);
+                if (server.isSelected()) {
+                    /*JFrame f = new JFrame();
+                    f.setTitle("JavaNO - Server");
+                    sp.setPreferredSize(new Dimension(1400, 800));
+                    f.setContentPane(sp);
+                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    f.requestFocusInWindow();
+                    f.pack();
+                    f.setVisible(true);*/
+                    new Server();
+
+                }else {
+                    new Client();
+                }
+
             });
         }}, BorderLayout.SOUTH);
     }
