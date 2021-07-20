@@ -1,15 +1,16 @@
 package game.utils;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Classe modelisant une carte
  */
-public class Carte {
+public class Carte implements Serializable {
 
-    private Color color;
+    public final Color color;
 
-    private int value;
+    public final int value;
 
     public Carte(Color color, int value) {
         this.color = color;

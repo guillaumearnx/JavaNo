@@ -6,10 +6,11 @@ import network.Server;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.*;
 
-public class Partie extends Observable {
+public class Partie extends Observable implements Serializable {
 
     private ArrayList<Carte> cartes;
     private final ArrayList<Joueur> joueurs;
@@ -80,6 +81,10 @@ public class Partie extends Observable {
 
     public ArrayList<Joueur> getJoueurs() {
         return joueurs;
+    }
+
+    public Joueur getJoueurByName(String name){
+        return joueurs.stream().filter(player -> player.nom.equals(name)).findAny().orElse(null);
     }
 
 
