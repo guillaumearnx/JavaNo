@@ -12,6 +12,8 @@ import java.util.*;
 
 public class Partie extends Observable implements Serializable {
 
+    private static final long serialVersionUID = 13L;
+
     private ArrayList<Carte> cartes;
     private final ArrayList<Joueur> joueurs;
 
