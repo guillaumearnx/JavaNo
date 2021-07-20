@@ -84,7 +84,28 @@ public class Partie extends Observable implements Serializable {
     }
 
     public Joueur getJoueurByName(String name){
-        return joueurs.stream().filter(player -> player.nom.equals(name)).findAny().orElse(null);
+        Joueur result = null;
+        System.out.println("il y a "+joueurs.size()+" joeuur sdans la liste");
+        System.out.println("a trouver : "+name);
+        for(Joueur j :joueurs){
+            System.out.println("Nom : "+j.nom);
+            if(j.nom.equals(name)){
+                result = j;
+
+                System.out.println("trouvé joueur avec nom : "+j.nom);
+                break;
+            }
+        }
+        afficherJoueurs();
+        return result;
+    }
+
+    public void afficherJoueurs(){
+        for(Joueur j : joueurs){
+            System.out.println(j);
+            System.out.println(j.nom);
+            System.out.println("--------");
+        }
     }
 
 
