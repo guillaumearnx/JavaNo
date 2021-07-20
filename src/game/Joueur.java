@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 public class Joueur implements Serializable {
 
-    public final String nom;
+    private static final long serialVersionUID = 42L;
+
+    private String nom;
 
     private ArrayList<Carte> paquet;
 
@@ -22,5 +24,9 @@ public class Joueur implements Serializable {
 
     public ArrayList<Carte> getCartes() {
         return paquet;
+    }
+
+    public String getNom() {
+        return nom;
     }
 }

@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class Carte implements Serializable {
 
+    private static final long serialVersionUID = 45L;
+
     public final Color color;
 
     public final int value;
