@@ -25,7 +25,7 @@ public class ServerPanel extends JPanel implements Observer {
         int i = 100;
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         for(Joueur j : p.getJoueurs()){
-            g.drawString(j.nom, (getWidth() - g.getFontMetrics().stringWidth(j.nom)) / 2, i + getFont().getSize());
+            g.drawString(j.getNom(), (getWidth() - g.getFontMetrics().stringWidth(j.getNom())) / 2, i + getFont().getSize());
             i+=50;
         }
         g.setFont(new Font("Arial", Font.PLAIN, 40));

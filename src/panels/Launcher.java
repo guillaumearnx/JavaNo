@@ -62,7 +62,7 @@ public class Launcher extends JPanel {
                     new Server();
 
                 }else {
-                    new Client();
+                    new Client(name.getText());
                 }
 
             });
