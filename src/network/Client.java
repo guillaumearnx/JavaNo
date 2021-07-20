@@ -1,6 +1,7 @@
 package network;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.Buffer;
@@ -9,110 +10,52 @@ import java.util.Scanner;
 
 public class Client {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException
+    {
+        try
+        {
+            Scanner scn = new Scanner(System.in);
 
-        final String HOST = "127.0.0.1";
-        final int PORT = 6587;
-        System.out.println("Started client");
+            // getting localhost ip
+            InetAddress ip = InetAddress.getByName("localhost");
 
-        try (Socket socket = new Socket(HOST, PORT)){
-            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-            Scanner sc = new Scanner(System.in);
-            String userInput;
-            String response;
-            String name = "";
-            ThreadClient threadClient = new ThreadClient(socket);
-            threadClient.start();
-            do{
-                if(name.equals("")) {
-                    System.out.println("Enter your name : ");
-                    userInput = sc.nextLine();
-                    name = userInput;
-                    output.println(userInput);
-                    if (userInput.equalsIgnoreCase("exit"))
-                        break;
-                }else {
-                    String message = ("("+name+")"+" messsage : ");
-                    System.out.println(message);
-                    userInput = sc.nextLine();
-                    output.println(userInput);
-                    if(userInput.equalsIgnoreCase("exit"))
-                        break;
+            // establish the connection with server port 5056
+            Socket s = new Socket(ip, 6587);
+
+            // obtaining input and out streams
+            DataInputStream dis = new DataInputStream(s.getInputStream());
+            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
+            // the following loop performs the exchange of
+            // information between client and client handler
+            while (true)
+            {
+                System.out.println(dis.readUTF());
+                String tosend = scn.nextLine();
+                dos.writeUTF(tosend);
+
+                // If client sends exit,close this connection
+                // and then break from the while loop
+                if(tosend.equals("Exit"))
+                {
+                    System.out.println("Closing this connection : " + s);
+                    s.close();
+                    System.out.println("Connection closed");
+                    break;
                 }
-            }while (!userInput.equalsIgnoreCase("exit"));
 
-        }catch (IOException e){
-            System.err.println("Exception in main : "+ e);
+                // printing date or time as requested by client
+                String received = dis.readUTF();
+                System.out.println(received);
+            }
+
+            // closing resources
+            scn.close();
+            dis.close();
+            dos.close();
+        }catch(Exception e){
+            e.printStackTrace();
         }
-
-
-
-
-
-
-
-
-
-        /*Socket socket = null;
-        try{
-            socket = new Socket(HOST, PORT);
-        }catch (UnknownHostException e){
-            System.err.println("Erreur avec l'hote : "+e);
-            System.exit(-1);
-        }catch (IOException e){
-            System.err.println("Création de socket impossible : "+e);
-            System.exit(-1);
-        }
-
-        BufferedReader input = null;
-        PrintWriter output = null;
-        try{
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-        }catch (IOException e){
-            System.out.println("Association des flux impossible : "+e);
-            System.exit(-1);
-        }
-
-        // Envoi de 'Bonjour'
-        String message = "Bonjour";
-        System.out.println("Envoi: " + message);
-        output.println(message);
-
-        // Lecture de 'Bonjour'
-        try {
-            message = input.readLine();
-        } catch(IOException e) {
-            System.err.println("Erreur lors de la lecture : " + e);
-            System.exit(-1);
-        }
-        System.out.println("Lu: " + message);
-
-        // Envoi de 'Au revoir'
-        message = "Au revoir";
-        System.out.println("Envoi: " + message);
-        output.println(message);
-
-        // Lecture de 'Au revoir'
-        try {
-            message = input.readLine();
-        } catch(IOException e) {
-            System.err.println("Erreur lors de la lecture : " + e);
-            System.exit(-1);
-        }
-        System.out.println("Lu: " + message);
-
-        // Fermeture des flux et de la socket
-        try {
-            input.close();
-            output.close();
-            socket.close();
-        } catch(IOException e) {
-            System.err.println("Erreur lors de la fermeture des flux et de la socket : " + e);
-            System.exit(-1);
-        }*/
-
     }
 
 }
