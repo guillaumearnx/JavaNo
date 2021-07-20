@@ -72,8 +72,8 @@ public class Partie extends Observable implements Serializable {
         return joueurs.size();
     }
 
-    public void ajouterJoueur(String inetAddress) {
-        joueurs.add(new Joueur(inetAddress));
+    public void ajouterJoueur(String name) {
+        joueurs.add(new Joueur(name));
         System.out.println("J'ajoute un joueur .... | nb -> "+joueurs.size());
         setChanged();
         notifyObservers();
@@ -88,8 +88,8 @@ public class Partie extends Observable implements Serializable {
     }
 
 
-    public void supprimerJoueur(String valueOf) {
-        joueurs.removeIf(player -> (player.nom.equals(valueOf)));
+    public void supprimerJoueur(String name) {
+        joueurs.removeIf(player -> (player.nom.equals(name)));
         setChanged();
         notifyObservers();
     }
