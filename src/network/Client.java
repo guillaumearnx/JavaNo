@@ -1,5 +1,6 @@
 package network;
 
+import datatransfer.SerialSocket;
 import game.Partie;
 import panels.ClientPanel;
 
@@ -25,7 +26,7 @@ public class Client {
             InetAddress ip = InetAddress.getByName(IP);
 
             // establish the connection with server port 5056
-            Socket s = new Socket(ip, PORT);
+            SerialSocket s = new SerialSocket(ip, PORT);
 
             // obtaining input and out streams
             DataInputStream dis = new DataInputStream(s.getInputStream());

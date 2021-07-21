@@ -1,5 +1,8 @@
 package network;
 
+import datatransfer.SerialOIS;
+import datatransfer.SerialOOS;
+import datatransfer.SerialSocket;
 import game.Joueur;
 import game.Partie;
 import panels.ServerPanel;
@@ -12,10 +15,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class Server implements Serializable {
 
@@ -49,27 +49,27 @@ public class Server implements Serializable {
 
                     Socket s = null;
                     try {
+                        System.out.println("recu socket");
                         s = serverSocket.accept();
                         System.out.println("Created thread");
                         System.out.println("A new client is connected : " + s);
-                        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-                        ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+                        SerialOOS oos = new SerialOOS(s.getOutputStream());
+                        SerialOIS ois = new SerialOIS(s.getInputStream());
                         System.out.println("Assigning new thread for this client");
 
                         // create a new thread object
-                        ClientHandler ct = new ClientHandler(s, oos, ois, p);
+                        ClientHandler ct = new ClientHandler(oos, ois, p);
                         clients.add(ct);
 
                         // Invoking the start() method
                         ct.start();
 
                     } catch (Exception e) {
-                        assert s != null;
-                        try {
+                        /*try {
                             s.close();
                         } catch (IOException exception) {
                             exception.printStackTrace();
-                        }
+                        }*/
                         e.printStackTrace();
                     }
                 }
@@ -88,8 +88,8 @@ public class Server implements Serializable {
                 System.out.println("Send repaint to client");
                 c.oos.writeUTF("repaint");
                 c.oos.writeObject(p);
-                System.out.println("Envoie d'une partie ou p possede "+c.joueur.getCartes().size()+" cartes");
-                System.out.println("Envoie d'une partie ou p2 possede "+p.getJoueurByName(c.joueur.getNom()).getCartes().size()+" cartes");
+                System.out.println("Envoie d'une partie ou p possede " + c.joueur.getCartes().size() + " cartes");
+                System.out.println("Envoie d'une partie ou p2 possede " + p.getJoueurByName(c.joueur.getNom()).getCartes().size() + " cartes");
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
@@ -97,9 +97,9 @@ public class Server implements Serializable {
     }
 
 
-    public void sendToAllClients(Partie p){
-        for(ClientHandler c : clients){
-                c.send(p);
+    public void sendToAllClients(Partie p) {
+        for (ClientHandler c : clients) {
+            c.send(p);
         }
     }
 
@@ -109,17 +109,15 @@ class ClientHandler extends Thread implements Serializable {
 
     private static final long serialVersionUID = 91L;
 
-    final ObjectOutputStream oos;
-    final ObjectInputStream ois;
-    final Socket s;
+    final SerialOOS oos;
+    final SerialOIS ois;
     Partie p;
     Joueur joueur;
 
     private String name;
 
     // Constructor
-    public ClientHandler(Socket s, ObjectOutputStream oos, ObjectInputStream ois, Partie p) {
-        this.s = s;
+    public ClientHandler(SerialOOS oos, SerialOIS ois, Partie p) {
         this.oos = oos;
         this.p = p;
         this.ois = ois;
@@ -153,8 +151,9 @@ class ClientHandler extends Thread implements Serializable {
             }*/
     }
 
-    public void send(Partie p){
+    public void send(Partie p) {
         try {
+            oos.writeUTF("repaint");
             oos.writeObject(p);
         } catch (IOException exception) {
             exception.printStackTrace();
