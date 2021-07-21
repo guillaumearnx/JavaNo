@@ -105,7 +105,9 @@ public class Server implements Serializable {
 
 }
 
-class ClientHandler extends Thread {
+class ClientHandler extends Thread implements Serializable {
+
+    private static final long serialVersionUID = 91L;
 
     final ObjectOutputStream oos;
     final ObjectInputStream ois;
