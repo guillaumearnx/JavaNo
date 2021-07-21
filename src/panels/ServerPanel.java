@@ -2,6 +2,7 @@ package panels;
 
 import game.Joueur;
 import game.Partie;
+import network.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +13,18 @@ import java.util.Observer;
 public class ServerPanel extends JPanel implements Observer {
 
     private Partie p;
+    private Server s;
 
-    public ServerPanel(Partie p) throws IOException {
+    public ServerPanel(Partie p, Server s) throws IOException {
         this.p = p;
+        this.s = s;
         this.setLayout(new BorderLayout());
+        this.add(new JButton("Lancer"){{
+            setPreferredSize(new Dimension(20,20));
+            addActionListener(e -> {
+              p.distribuer();
+            });
+        }}, BorderLayout.AFTER_LAST_LINE);
     }
 
 
@@ -36,6 +45,7 @@ public class ServerPanel extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         p = (Partie) o;
+        System.out.println("*Server update*");
         repaint();
     }
 }
