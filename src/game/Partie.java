@@ -16,23 +16,27 @@ public class Partie extends Observable implements Serializable {
 
     private ArrayList<Carte> cartes;
     private final ArrayList<Joueur> joueurs;
+    private Server s;
 
-    public Partie() {
+    public Partie(Server s) {
+        this.s = s;
         System.out.println("Partie cree");
         joueurs = new ArrayList<Joueur>();
         cartes = composer();
         Collections.shuffle(cartes);
-        distribuer();
     }
 
-    private void distribuer() {
+    public void distribuer() {
         int indice = 0;
         for (int i = 0; i < 7; i++) {
             for (Joueur j : joueurs) {
+                Carte c = cartes.remove(indice);
+                System.out.println("Joueur pioche une carte de couleur : "+c.color);
                 j.piocher(cartes.remove(indice));
                 indice++;
             }
         }
+        s.sendToAllClients(this);
     }
 
     public static ArrayList<Carte> composer() {
@@ -114,7 +118,9 @@ public class Partie extends Observable implements Serializable {
 
     public void supprimerJoueur(String name) {
         joueurs.removeIf(player -> (player.getNom().equals(name)));
-        setChanged();
-        notifyObservers();
+    }
+
+    public void ajouterJoueur2(Joueur joueur) {
+        joueurs.add(joueur);
     }
 }
