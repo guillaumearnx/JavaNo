@@ -108,10 +108,16 @@ public class Partie extends Observable implements Serializable {
     }
 
     public void afficherJoueurs(){
+        System.out.println("---affichage partie-----");
+        System.out.println("Partie contient "+joueurs.size()+" joueurs");
         for(Joueur j : joueurs){
-            System.out.println(j);
-            System.out.println(j.getNom());
-            System.out.println("--------");
+            System.out.println("Joueur : Nom -> "+j.getNom());
+            System.out.println("Joueur possede "+j.getCartes().size()+" cartes");
+            int i = 0;
+            for(Carte c : j.getCartes()){
+                System.out.println("Carte "+i+" de couleur "+c.color+ " de valeur : "+c.value);
+                i++;
+            }
         }
     }
 
