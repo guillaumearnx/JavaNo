@@ -50,7 +50,7 @@ public class ClientPanel extends JPanel {
             g2d.setStroke(new BasicStroke(3));
             g2d.drawString(Carte.getStringFromValue(c.value), 5+taillespaceindiv+ debutdeck + (i * taillecarte) + (((tailleespacestotaux) / cardsnb) * i), h*3/4+(taillecarte*(3/4))+taillecarte/3*2);
             g2d.drawOval(5+taillespaceindiv+ debutdeck + (i * taillecarte) + (((tailleespacestotaux) / cardsnb) * i), h*3/4+(taillecarte*(3/4))+taillecarte/3*2, taillecarte-10, h/5-(taillecarte));*/
-                g2d.drawImage(c.image.getImage(), debutdeck + i * taillecarte, getHeight() - getHeight() / 5, taillecarte, taillecarte, null);
+                g2d.drawImage(c.image.toImage(), debutdeck + i * taillecarte, getHeight() - getHeight() / 5, taillecarte, taillecarte, null);
             }
         }
     }

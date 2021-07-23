@@ -9,25 +9,22 @@ import java.util.List;
 
 public class SerialImage implements Serializable {
 
-    transient List<BufferedImage> onlyImage;
-
-    public SerialImage(BufferedImage img){
-        onlyImage = new ArrayList<BufferedImage>(){{
-            add(img);
-        }};
+    private byte[] imgArray;
+    public SerialImage(BufferedImage img) throws IOException {
+        ByteArrayOutputStream boos = new ByteArrayOutputStream();
+        ImageIO.write(img, "png", boos);
+        imgArray = boos.toByteArray();
     }
 
-    private void writeObject(ObjectOutputStream oos) throws IOException {
-        oos.defaultWriteObject();
-            ImageIO.write(onlyImage.get(0), "png", oos);
+    public BufferedImage toImage() {
+        try {
+            return ImageIO.read(new ByteArrayInputStream(imgArray));
+        } catch (IOException exception) {
+            System.err.println("Error while creating image from bytes");;
+            exception.printStackTrace();
+            return null;
+        }
     }
 
-    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject();
-        onlyImage.add(ImageIO.read(ois));
-    }
 
-    public Image getImage() {
-        return onlyImage.get(0);
-    }
 }
