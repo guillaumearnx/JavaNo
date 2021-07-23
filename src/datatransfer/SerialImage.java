@@ -22,4 +22,8 @@ public class SerialImage extends BufferedImage implements Serializable {
     public SerialImage(ColorModel cm, WritableRaster wr){
         super(cm, wr, cm.isAlphaPremultiplied(), null);
     }
+
+    public SerialImage(int width, int height, int imageType) {
+        super(width, height, imageType);
+    }
 }
