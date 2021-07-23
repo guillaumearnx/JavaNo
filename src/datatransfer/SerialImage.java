@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 public class SerialImage extends BufferedImage implements Serializable {
 
+    private static final long serialVersionUID = 18L;
+
     public SerialImage(File readFile) throws IOException {
         this(ImageIO.read(readFile));
     }
@@ -19,9 +21,5 @@ public class SerialImage extends BufferedImage implements Serializable {
 
     public SerialImage(ColorModel cm, WritableRaster wr){
         super(cm, wr, cm.isAlphaPremultiplied(), null);
-    }
-
-    public boolean write(String format, File output) throws IOException {
-        return ImageIO.write(this, format, output);
     }
 }

@@ -93,20 +93,6 @@ public class Server implements Serializable {
 
     }
 
-    public void refreshClients() {
-        for (ClientHandler c : clients) {
-            try {
-                System.out.println("Send repaint to client");
-                c.oos.writeUTF("repaint");
-                c.oos.writeObject(p);
-                System.out.println("Envoie d'une partie ou p possede " + c.joueur.getCartes().size() + " cartes");
-                System.out.println("Envoie d'une partie ou p2 possede " + p.getJoueurByName(c.joueur.getNom()).getCartes().size() + " cartes");
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        }
-    }
-
 
     public void sendToAllClients(Partie p) {
         for (ClientHandler c : clients) {
@@ -164,6 +150,7 @@ class ClientHandler extends Thread implements Serializable {
         String action = null;
         try {
             action = actionHandler.getAction();
+            System.out.println("send actionhandler");
             oos.writeObject(actionHandler);
         } catch (IOException exception) {
             switch (action) {
