@@ -1,5 +1,7 @@
 package game.utils;
 
+import datatransfer.SerialImage;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,9 +19,9 @@ public class Carte implements Serializable {
 
     public final int value;
 
-    public final Image image;
+    public final SerialImage image;
 
-    public Carte(Color color, int value, BufferedImage img) {
+    public Carte(Color color, int value, SerialImage img) {
         this.image = img;
         this.color = color;
         this.value = value;

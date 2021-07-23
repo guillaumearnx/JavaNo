@@ -1,7 +1,7 @@
 package game;
 
+import datatransfer.SerialImage;
 import game.utils.Carte;
-import network.Client;
 import network.Server;
 
 import javax.imageio.ImageIO;
@@ -9,7 +9,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.util.*;
 
 public class Partie extends Observable implements Serializable {
@@ -45,32 +44,32 @@ public class Partie extends Observable implements Serializable {
         Color[] couleurs = {Color.red, Color.blue, Color.green, Color.yellow};
         return new ArrayList<Carte>() {{
             for (int colind = 0; colind < 4; colind++) {
-                add(new Carte(couleurs[colind], 0, ImageIO.read(new File(Carte.assetsDirectory + couleurs[colind].toString().toLowerCase() + File.separator, "0.png"))));
+                add(new Carte(couleurs[colind], 0, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "0.png")))));
                 for (int i = 1; i < 10; i++) {
-                    add(new Carte(couleurs[colind], i, ImageIO.read(new File(Carte.assetsDirectory + couleurs[colind].toString().toLowerCase() + File.separator, i + ".png"))));
+                    add(new Carte(couleurs[colind], i,new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, i + ".png")))));
                 }
                 for (int i = 0; i < 2; i++) {
                     //+2 = 92
-                    add(new Carte(couleurs[colind], 92, ImageIO.read(new File(Carte.assetsDirectory + couleurs[colind].toString().toLowerCase() + File.separator, "92.png"))));
+                    add(new Carte(couleurs[colind], 92,new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "92.png")))));
                 }
                 for (int i = 0; i < 2; i++) {
                     //Changement de sens = 96
-                    add(new Carte(couleurs[colind], 96, ImageIO.read(new File(Carte.assetsDirectory + couleurs[colind].toString().toLowerCase() + File.separator, "96.png"))));
+                    add(new Carte(couleurs[colind], 96,new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "96.png")))));
                 }
                 for (int i = 0; i < 2; i++) {
                     //Skip = 40
-                    add(new Carte(couleurs[colind], 40, ImageIO.read(new File(Carte.assetsDirectory + couleurs[colind].toString().toLowerCase() + File.separator, "40.png"))));
+                    add(new Carte(couleurs[colind], 40,new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "40.png")))));
                 }
 
             }
-            final String parent = Carte.assetsDirectory + Color.black.toString().toLowerCase() + File.separator;
+            final String parent = Carte.assetsDirectory + getNameFromColor(Color.black) + File.separator;
             for (int i = 0; i < 4; i++) {
                 //+4= 94
-                add(new Carte(Color.black, 94, ImageIO.read(new File(parent, "94.png"))));
+                add(new Carte(Color.black, 94,new SerialImage(ImageIO.read(new File(parent, "94.png")))));
             }
             for (int i = 0; i < 4; i++) {
                 //Changement couleur = 33
-                add(new Carte(Color.black, 33, ImageIO.read(new File(parent, "33.png"))));
+                add(new Carte(Color.black, 33,new SerialImage(ImageIO.read(new File(parent, "33.png")))));
             }
         }};
     }
@@ -123,11 +122,24 @@ public class Partie extends Observable implements Serializable {
     }
 
 
-    public void supprimerJoueur(String name) {
-        joueurs.removeIf(player -> (player.getNom().equals(name)));
+    public void supprimerJoueur(Joueur joueur) {
+        joueurs.remove(joueur);
+        setChanged();
+        notifyObservers();
     }
 
     public void ajouterJoueur2(Joueur joueur) {
         joueurs.add(joueur);
+    }
+
+    public static String getNameFromColor(Color c) {
+        return switch (c.toString().toLowerCase()) {
+            case "java.awt.color[r=0,g=0,b=0]" -> "black";
+            case "java.awt.color[r=0,g=0,b=255]" -> "blue";
+            case "java.awt.color[r=255,g=255,b=0]" -> "yellow";
+            case "java.awt.color[r=255,g=0,b=0]" -> "red";
+            case "java.awt.color[r=0,g=255,b=0]" -> "green";
+            default -> null;
+        };
     }
 }
