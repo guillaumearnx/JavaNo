@@ -2,8 +2,11 @@ package game;
 
 import game.utils.Carte;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 public class Joueur implements Serializable {
 
@@ -13,7 +16,7 @@ public class Joueur implements Serializable {
 
     private ArrayList<Carte> paquet;
 
-    public Joueur(String nom){
+    public Joueur(String nom) {
         this.nom = nom;
         paquet = new ArrayList<Carte>();
     }
@@ -28,5 +31,17 @@ public class Joueur implements Serializable {
 
     public String getNom() {
         return nom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Joueur joueur)) return false;
+        return Objects.equals(nom, joueur.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom);
     }
 }
