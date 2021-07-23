@@ -44,32 +44,32 @@ public class Partie extends Observable implements Serializable {
         Color[] couleurs = {Color.red, Color.blue, Color.green, Color.yellow};
         return new ArrayList<Carte>() {{
             for (int colind = 0; colind < 4; colind++) {
-                add(new Carte(couleurs[colind], 0, new SerialImage(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "0.png"))));
+                add(new Carte(couleurs[colind], 0, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "0.png")))));
                 for (int i = 1; i < 10; i++) {
-                    add(new Carte(couleurs[colind], i, new SerialImage(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, i + ".png"))));
+                    add(new Carte(couleurs[colind], i, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, i + ".png")))));
                 }
                 for (int i = 0; i < 2; i++) {
                     //+2 = 92
-                    add(new Carte(couleurs[colind], 92, new SerialImage(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "92.png"))));
+                    add(new Carte(couleurs[colind], 92, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "92.png")))));
                 }
                 for (int i = 0; i < 2; i++) {
                     //Changement de sens = 96
-                    add(new Carte(couleurs[colind], 96, new SerialImage(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "96.png"))));
+                    add(new Carte(couleurs[colind], 96, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "96.png")))));
                 }
                 for (int i = 0; i < 2; i++) {
                     //Skip = 40
-                    add(new Carte(couleurs[colind], 40, new SerialImage(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "40.png"))));
+                    add(new Carte(couleurs[colind], 40, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "40.png")))));
                 }
 
             }
             final String parent = Carte.assetsDirectory + getNameFromColor(Color.black) + File.separator;
             for (int i = 0; i < 4; i++) {
                 //+4= 94
-                add(new Carte(Color.black, 94, new SerialImage(new File(parent, "94.png"))));
+                add(new Carte(Color.black, 94, new SerialImage(ImageIO.read(new File(parent, "94.png")))));
             }
             for (int i = 0; i < 4; i++) {
                 //Changement couleur = 33
-                add(new Carte(Color.black, 33, new SerialImage(new File(parent, "33.png"))));
+                add(new Carte(Color.black, 33, new SerialImage(ImageIO.read(new File(parent, "33.png")))));
             }
         }};
     }
