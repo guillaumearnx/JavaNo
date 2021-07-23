@@ -1,5 +1,6 @@
 package network;
 
+import datatransfer.ActionHandler;
 import datatransfer.SerialOIS;
 import datatransfer.SerialOOS;
 import datatransfer.SerialSocket;
@@ -29,6 +30,7 @@ public class Server implements Serializable {
             p = new Partie(this);
         }catch (Exception e){
             System.err.println("Error occured when create a Partie");
+            e.printStackTrace();
             System.exit(-1);
         }
         clients = new ArrayList<ClientHandler>();
@@ -68,6 +70,10 @@ public class Server implements Serializable {
 
                         // Invoking the start() method
                         ct.start();
+                        while (!ct.isInterrupted()) {
+                        }
+                        System.out.println("client : " + ct.joueur.getNom() + " disconnected ");
+                        clients.remove(ct);
 
                     } catch (Exception e) {
                         /*try {
@@ -104,7 +110,7 @@ public class Server implements Serializable {
 
     public void sendToAllClients(Partie p) {
         for (ClientHandler c : clients) {
-            c.send(p);
+            c.send(new ActionHandler("repaint", p));
         }
     }
 
@@ -134,34 +140,41 @@ class ClientHandler extends Thread implements Serializable {
             this.joueur = (Joueur) ois.readObject();
             System.out.println("J'ajoute " + joueur.getNom() + " a la liste");
             p.ajouterJoueur(joueur.getNom());
-            //p.ajouterJoueur(name);
-
-            /*System.out.println("Envoie partie");
-            oos.writeObject(p);*/
-
-
         } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
-            System.err.println("Cant read name of client");
-            ;
+            p.supprimerJoueur(joueur);
+            System.err.println("ERROR WITH INSTANCIATION OF A CLIENT");
+            this.stop();
         }
-        //while (true)
-            /*try {
-
+        while (true) {
+            try {
+                ActionHandler actionHandler = new ActionHandler("reachtest", null);
+                send(actionHandler);
                 Thread.sleep(2000);
             } catch (Exception e) {
-                System.out.println("Client disconnected");
-                p.supprimerJoueur(name);
+                e.printStackTrace();
+                System.out.println("Client disconnected because of error");
+                p.supprimerJoueur(this.joueur);
                 this.stop();
-            }*/
+            }
+        }
     }
 
-    public void send(Partie p) {
+    public void send(ActionHandler actionHandler) {
+        String action = null;
         try {
-            oos.writeUTF("repaint");
-            oos.writeObject(p);
+            action = actionHandler.getAction();
+            oos.writeObject(actionHandler);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            switch (action) {
+                case "reachtest":
+                    System.out.println("A client [" + this.joueur.getNom() + "] has lost connection");
+                    this.p.supprimerJoueur(this.joueur);
+                    this.stop();
+                default:
+                    exception.printStackTrace();
+                    this.stop();
+            }
         }
     }
 }

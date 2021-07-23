@@ -23,6 +23,8 @@ public class ServerPanel extends JPanel implements Observer {
             setPreferredSize(new Dimension(20,20));
             addActionListener(e -> {
               p.distribuer();
+              this.setText("PARTIE EN COURS");
+              this.setEnabled(false);
             });
         }}, BorderLayout.AFTER_LAST_LINE);
     }
@@ -46,6 +48,7 @@ public class ServerPanel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         p = (Partie) o;
         System.out.println("*Server update*");
+        p.afficherJoueurs();
         repaint();
     }
 }

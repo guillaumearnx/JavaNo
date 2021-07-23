@@ -45,7 +45,7 @@ public class Client {
                 e.printStackTrace();
             }
             //FRAME
-            ClientPanel cp = new ClientPanel(this);
+            ClientPanel cp = new ClientPanel(this, name);
             JFrame f = new JFrame();
             f.setTitle("JavaNo - Client");
             cp.setPreferredSize(new Dimension(1400, 800));
