@@ -26,4 +26,8 @@ public class SerialImage implements Serializable {
         ois.defaultReadObject();
         onlyImage.add(ImageIO.read(ois));
     }
+
+    public Image getImage() {
+        return onlyImage.get(0);
+    }
 }
