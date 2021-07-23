@@ -25,7 +25,12 @@ public class Server implements Serializable {
     private ArrayList<ClientHandler> clients;
 
     public Server() {
-        p = new Partie(this);
+        try {
+            p = new Partie(this);
+        }catch (Exception e){
+            System.err.println("Error occured when create a Partie");
+            System.exit(-1);
+        }
         clients = new ArrayList<ClientHandler>();
         final int PORT = 6587;
 
