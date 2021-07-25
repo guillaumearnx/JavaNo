@@ -40,6 +40,10 @@ public class Partie extends Observable implements Serializable {
         s.sendToAllClients(this);
     }
 
+    public ArrayList<Carte> getPioche() {
+        return cartes;
+    }
+
     public static ArrayList<Carte> composer() throws IOException {
         Color[] couleurs = {Color.red, Color.blue, Color.green, Color.yellow};
         return new ArrayList<Carte>() {{
@@ -91,19 +95,12 @@ public class Partie extends Observable implements Serializable {
 
     public Joueur getJoueurByName(String name) {
         Joueur result = null;
-        System.out.println("il y a " + joueurs.size() + " joeuur sdans la liste");
-        System.out.println("a trouver : " + name);
-        afficherJoueurs();
         for (Joueur j : joueurs) {
-            System.out.println("Nom : " + j.getNom());
             if (j.getNom().equals(name)) {
                 result = j;
-
-                System.out.println("trouvé joueur avec nom : " + j.getNom());
                 break;
             }
         }
-
         return result;
     }
 
@@ -126,10 +123,6 @@ public class Partie extends Observable implements Serializable {
         joueurs.remove(joueur);
         setChanged();
         notifyObservers();
-    }
-
-    public void ajouterJoueur2(Joueur joueur) {
-        joueurs.add(joueur);
     }
 
     public static String getNameFromColor(Color c) {
