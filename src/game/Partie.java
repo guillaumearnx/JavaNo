@@ -15,7 +15,8 @@ public class Partie extends Observable implements Serializable {
 
     private static final long serialVersionUID = 13L;
 
-    private ArrayList<Carte> cartes;
+    private ArrayList<Carte> pioche;
+    private ArrayList<Carte> posees;
     private final ArrayList<Joueur> joueurs;
     private Server s;
 
@@ -23,17 +24,18 @@ public class Partie extends Observable implements Serializable {
         this.s = s;
         System.out.println("Partie cree");
         joueurs = new ArrayList<Joueur>();
-        cartes = composer();
-        Collections.shuffle(cartes);
+        posees = new ArrayList<Carte>();
+        pioche = composer();
+        Collections.shuffle(pioche);
     }
 
     public void distribuer() {
         int indice = 0;
         for (int i = 0; i < 7; i++) {
             for (Joueur j : joueurs) {
-                Carte c = cartes.remove(indice);
+                Carte c = pioche.remove(indice);
                 System.out.println("Joueur pioche une carte de couleur : " + c.color);
-                j.piocher(cartes.remove(indice));
+                j.piocher(pioche.remove(indice));
                 indice++;
             }
         }
@@ -41,7 +43,7 @@ public class Partie extends Observable implements Serializable {
     }
 
     public ArrayList<Carte> getPioche() {
-        return cartes;
+        return pioche;
     }
 
     public static ArrayList<Carte> composer() throws IOException {
@@ -134,5 +136,9 @@ public class Partie extends Observable implements Serializable {
             case "java.awt.color[r=0,g=255,b=0]" -> "green";
             default -> null;
         };
+    }
+
+    public ArrayList<Carte> getPosees() {
+        return posees;
     }
 }
