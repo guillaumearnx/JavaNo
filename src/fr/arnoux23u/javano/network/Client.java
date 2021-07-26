@@ -1,15 +1,15 @@
-package network;
+package fr.arnoux23u.javano.network;
 
-import datatransfer.ActionHandler;
-import datatransfer.SerialSocket;
-import game.*;
-import panels.ClientPanel;
+import fr.arnoux23u.javano.datatransfer.ActionHandler;
+import fr.arnoux23u.javano.datatransfer.SerialSocket;
+import fr.arnoux23u.javano.game.*;
+import fr.arnoux23u.javano.game.utils.Carte;
+import fr.arnoux23u.javano.panels.ClientPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
-import java.net.Socket;
 
 public class Client {
 
@@ -61,8 +61,10 @@ public class Client {
                 System.out.println("Client : " + name + " started..");
                 while (true) {
                     try {
+                        System.out.println("Read action handler");
                         ActionHandler actionHandler = (ActionHandler) ois.readObject();
                         String action = actionHandler.getAction();
+                        System.out.println(actionHandler.getObject());
                         System.out.println("read  -> " + action);
                         switch (action) {
                             case "repaint":
@@ -78,7 +80,7 @@ public class Client {
                     } catch (IOException | ClassNotFoundException e) {
                         System.out.println("Erreur");
                         e.printStackTrace();
-                        //System.exit(-1);
+                        System.exit(-1);
                     }
                 }
             }).start();
@@ -93,6 +95,7 @@ public class Client {
 
     }
 
+
     public Partie getPartie() {
         return p;
     }
@@ -100,5 +103,13 @@ public class Client {
     public Joueur getJoueur() {
         return j;
     }
+
+    public boolean poserCarte(Carte c){
+
+        if(p.getPioche().remove(c))
+            p.getPosees().add(c);
+        return true;
+    }
+
 }
 

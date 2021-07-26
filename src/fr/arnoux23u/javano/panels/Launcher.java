@@ -1,12 +1,10 @@
-package panels;
+package fr.arnoux23u.javano.panels;
 
-import network.Client;
-import network.Server;
+import fr.arnoux23u.javano.network.Client;
+import fr.arnoux23u.javano.network.Server;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.Random;
 
 public class Launcher extends JPanel {

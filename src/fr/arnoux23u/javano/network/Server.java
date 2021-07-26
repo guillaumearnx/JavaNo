@@ -1,21 +1,17 @@
-package network;
+package fr.arnoux23u.javano.network;
 
-import datatransfer.ActionHandler;
-import datatransfer.SerialOIS;
-import datatransfer.SerialOOS;
-import datatransfer.SerialSocket;
-import game.Joueur;
-import game.Partie;
-import panels.ServerPanel;
+import fr.arnoux23u.javano.datatransfer.ActionHandler;
+import fr.arnoux23u.javano.datatransfer.SerialOIS;
+import fr.arnoux23u.javano.datatransfer.SerialOOS;
+import fr.arnoux23u.javano.game.Joueur;
+import fr.arnoux23u.javano.game.Partie;
+import fr.arnoux23u.javano.panels.ServerPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Server implements Serializable {

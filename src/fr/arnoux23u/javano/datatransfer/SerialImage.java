@@ -1,11 +1,8 @@
-package datatransfer;
+package fr.arnoux23u.javano.datatransfer;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SerialImage implements Serializable {
 

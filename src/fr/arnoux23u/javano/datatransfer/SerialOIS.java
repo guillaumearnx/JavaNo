@@ -1,4 +1,4 @@
-package datatransfer;
+package fr.arnoux23u.javano.datatransfer;
 
 import java.io.*;
 

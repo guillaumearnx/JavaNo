@@ -1,8 +1,8 @@
-package panels;
+package fr.arnoux23u.javano.panels;
 
-import game.Joueur;
-import game.Partie;
-import network.Server;
+import fr.arnoux23u.javano.game.Joueur;
+import fr.arnoux23u.javano.game.Partie;
+import fr.arnoux23u.javano.network.Server;
 
 import javax.swing.*;
 import java.awt.*;

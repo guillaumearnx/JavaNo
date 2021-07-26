@@ -1,6 +1,6 @@
-import network.*;
-import game.*;
-import panels.Launcher;
+package fr.arnoux23u.javano;
+
+import fr.arnoux23u.javano.panels.Launcher;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,8 +1,9 @@
-package game;
+package fr.arnoux23u.javano.game;
 
-import datatransfer.SerialImage;
-import game.utils.Carte;
-import network.Server;
+import fr.arnoux23u.javano.cards.Cartes;
+import fr.arnoux23u.javano.datatransfer.SerialImage;
+import fr.arnoux23u.javano.game.utils.Carte;
+import fr.arnoux23u.javano.network.Server;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -28,21 +29,31 @@ public class Partie extends Observable implements Serializable {
         posees = new ArrayList<Carte>();
         pioche = composer();
         Collections.shuffle(pioche);
-        actualPlayer = joueurs.get(0);
     }
+
+    public Partie(Server s, ArrayList<Joueur> players) throws IOException {
+        this.s = s;
+        System.out.println("Partie cree");
+        joueurs = players;
+        posees = new ArrayList<Carte>();
+        pioche = composer();
+        Collections.shuffle(pioche);
+    }
+
 
     public void distribuer() {
         int indice = 0;
         for (int i = 0; i < 7; i++) {
             for (Joueur j : joueurs) {
-                Carte c = pioche.remove(indice);
+                Carte c = pioche.get(indice);
                 System.out.println("Joueur pioche une carte de couleur : " + c.color);
                 j.piocher(pioche.remove(indice));
                 indice++;
             }
         }
         posees.add(pioche.remove(0));
-        s.sendToAllClients(this);
+        if (s != null)
+            s.sendToAllClients(this);
     }
 
     public ArrayList<Carte> getPioche() {
@@ -53,32 +64,30 @@ public class Partie extends Observable implements Serializable {
         Color[] couleurs = {Color.red, Color.blue, Color.green, Color.yellow};
         return new ArrayList<Carte>() {{
             for (int colind = 0; colind < 4; colind++) {
-                add(new Carte(couleurs[colind], 0, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "0.png"))), false));
+                add(new Carte(couleurs[colind], 0));
                 for (int i = 1; i < 10; i++) {
-                    add(new Carte(couleurs[colind], i, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, i + ".png"))), false));
+                    add(new Carte(couleurs[colind], i));
+                    add(new Carte(couleurs[colind], i));
                 }
                 for (int i = 0; i < 2; i++) {
                     //+2 = 92
-                    add(new Carte(couleurs[colind], 92, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "92.png"))), true));
+                    add(new Carte(couleurs[colind], 92));
                 }
                 for (int i = 0; i < 2; i++) {
                     //Changement de sens = 96
-                    add(new Carte(couleurs[colind], 96, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "96.png"))), true));
+                    add(new Carte(couleurs[colind], 96));
                 }
                 for (int i = 0; i < 2; i++) {
                     //Skip = 40
-                    add(new Carte(couleurs[colind], 40, new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(couleurs[colind]) + File.separator, "40.png"))), true));
+                    add(new Carte(couleurs[colind], 40));
                 }
 
             }
             final String parent = Carte.assetsDirectory + getNameFromColor(Color.black) + File.separator;
             for (int i = 0; i < 4; i++) {
                 //+4= 94
-                add(new Carte(Color.black, 94, new SerialImage(ImageIO.read(new File(parent, "94.png"))), true));
-            }
-            for (int i = 0; i < 4; i++) {
-                //Changement couleur = 33
-                add(new Carte(Color.black, 33, new SerialImage(ImageIO.read(new File(parent, "33.png"))), true));
+                add(new Carte(Color.black, 94));
+                add(new Carte(Color.black, 33));
             }
         }};
     }
@@ -149,23 +158,28 @@ public class Partie extends Observable implements Serializable {
         if (j != actualPlayer)
             return false;
         Carte top = posees.get(posees.size() - 1);
-        if(top.special){
-            if(top.color == Color.black){
+        return superposerCartes(c, top);
+    }
+
+    public static boolean superposerCartes(Carte dessus, Carte dessous){
+        /*if (top.special) {
+            if (top.color == Color.black) {
                 return c.special && (c.color == Color.BLACK);
-            }else{
+            } else {
                 return c.color == top.color || c.value == top.value;
             }
-        }else{
-            if(c.special){
-                if(c.color == Color.black){
+        } else {
+            if (c.special) {
+                if (c.color == Color.black) {
                     return true;
-                }else{
+                } else {
                     return c.color == top.color;
                 }
-            }else{
+            } else {
                 return c.color == top.color || c.value == top.value;
             }
-        }
+        }*/
+        return false;
     }
 
 }

@@ -1,12 +1,10 @@
-package game;
+package fr.arnoux23u.javano.game;
 
-import game.utils.Carte;
+import fr.arnoux23u.javano.game.utils.Carte;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 public class Joueur implements Serializable {
 
