@@ -31,7 +31,7 @@ public class Carte implements Serializable {
 
     private boolean special;
 
-    public Carte(Color color, int value){
+    public Carte(Color color, int value) {
         this.color = color;
         this.value = value;
         switch (value) {
@@ -57,20 +57,18 @@ public class Carte implements Serializable {
             }
         }
         SerialImage image;
-        try{
+        try {
             image = new SerialImage(ImageIO.read(new File(Carte.assetsDirectory + getNameFromColor(color) + File.separator, value + ".png")));
-        }catch (IOException e){
+        } catch (IOException e) {
             image = null;
-            System.out.println("Cant read texture for card : "+value);
+            System.out.println("Cant read texture for card : " + value);
         }
         this.image = image;
 
     }
 
-    public boolean setChoosed(Color choosed) {
-        if (special)
-            this.choosed = choosed;
-        return special;
+    public void setChoosed(Color choosed) {
+        this.choosed = choosed;
     }
 
     public Color getChoosed() {
@@ -79,5 +77,9 @@ public class Carte implements Serializable {
 
     public boolean isSpecial() {
         return special;
+    }
+
+    public boolean isChoosed() {
+        return this.choosed != null;
     }
 }

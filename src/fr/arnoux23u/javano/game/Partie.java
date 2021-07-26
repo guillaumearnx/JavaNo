@@ -1,16 +1,15 @@
 package fr.arnoux23u.javano.game;
 
-import fr.arnoux23u.javano.cards.Cartes;
-import fr.arnoux23u.javano.datatransfer.SerialImage;
 import fr.arnoux23u.javano.game.utils.Carte;
 import fr.arnoux23u.javano.network.Server;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Observable;
 
 public class Partie extends Observable implements Serializable {
 
@@ -161,25 +160,85 @@ public class Partie extends Observable implements Serializable {
         return superposerCartes(c, top);
     }
 
-    public static boolean superposerCartes(Carte dessus, Carte dessous){
-        /*if (top.special) {
-            if (top.color == Color.black) {
-                return c.special && (c.color == Color.BLACK);
-            } else {
-                return c.color == top.color || c.value == top.value;
-            }
-        } else {
-            if (c.special) {
-                if (c.color == Color.black) {
-                    return true;
-                } else {
-                    return c.color == top.color;
+    public static boolean superposerCartes(Carte dessus, Carte dessous) {
+        switch (dessous.value) {
+            //NORMAL
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> {
+                switch (dessus.value) {
+                    //NORMAL
+                    case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> {
+                        return dessous.value == dessus.value || dessous.color == dessus.color;
+                    }
+                    //+2
+                    // SKIP
+                    // REVERSE
+                    case 92, 96, 40 -> {
+                        return dessous.color == dessus.color;
+                    }
+                    //+4
+                    // COLOR
+                    case 94, 33 -> {
+                        return true;
+                    }
                 }
-            } else {
-                return c.color == top.color || c.value == top.value;
             }
-        }*/
+            //+2
+            //+4
+            case 92, 94 -> {
+                if (dessous.value == dessus.value) {
+                    return true;
+                }
+                if (dessous.isChoosed()) {
+                    switch (dessus.value) {
+                        //NORMAL
+                        case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 40, 92, 96 -> {
+                            return dessous.getChoosed() == dessus.color;
+                        }
+                        //+4
+                        case 94, 33 -> {
+                            return true;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+            }
+            //SKIP
+            case 40, 96 -> {
+                if (dessous.value == dessus.value) {
+                    return true;
+                }
+                System.out.println("dessous is : " + dessous.value + "/" + getNameFromColor(dessous.color));
+                System.out.println("dessus is : " + dessus.value + "/" + getNameFromColor(dessus.color));
+                switch (dessus.value) {
+                    //NORMAL
+                    case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 40, 92, 96 -> {
+                        return dessous.color == dessus.color;
+                    }
+                    //COLOR
+                    case 33, 94 -> {
+                        return true;
+                    }
+                }
+            }
+            case 33 -> {
+                if (dessous.value == dessus.value) {
+                    return true;
+                }
+                if (dessous.isChoosed()) {
+                    switch (dessus.value) {
+                        case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 92, 96, 40 -> {
+                            return dessous.getChoosed() == dessus.color;
+                        }
+                        case 94 -> {
+                            return true;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
         return false;
     }
-
 }

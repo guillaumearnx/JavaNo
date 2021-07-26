@@ -70,7 +70,7 @@ public class TestPartie {
     @Test
     public void test03_peutPoser_plusDeux() throws IOException {
         Carte plus2jaune = new Carte(Color.YELLOW, 92);
-        Carte plus2jaune2 = new Carte(Color.RED, 92);
+        Carte plus2jaune2 = new Carte(Color.YELLOW, 92);
         Carte plus2vert = new Carte(Color.GREEN, 92);
         Carte vert0 = new Carte(Color.GREEN, 0);
         Carte plus4 = new Carte(Color.BLACK, 94);
@@ -105,8 +105,8 @@ public class TestPartie {
 
     @Test
     public void test04_peutPoser_plusQuatre() throws IOException {
-        Carte plusquatre = new Carte(Color.BLACK, 92);
-        Carte plusquatre2 = new Carte(Color.BLACK, 92);
+        Carte plusquatre = new Carte(Color.BLACK, 94);
+        Carte plusquatre2 = new Carte(Color.BLACK, 94);
         Carte plus2vert = new Carte(Color.GREEN, 92);
         Carte vert0 = new Carte(Color.GREEN, 0);
         Carte bleu0 = new Carte(Color.BLUE, 0);

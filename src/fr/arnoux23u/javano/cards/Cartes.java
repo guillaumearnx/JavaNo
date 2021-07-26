@@ -4,4 +4,5 @@ public enum Cartes {
 
     NORMAL,
     ADD,
-    SPECIAL}
+    SPECIAL
+}
