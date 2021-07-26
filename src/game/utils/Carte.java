@@ -21,10 +21,13 @@ public class Carte implements Serializable {
 
     public final SerialImage image;
 
-    public Carte(Color color, int value, SerialImage img) {
+    public final boolean special;
+
+    public Carte(Color color, int value, SerialImage img, boolean special) {
         this.image = img;
         this.color = color;
         this.value = value;
+        this.special = special;
     }
 
     public static String getStringFromValue(int value) {
