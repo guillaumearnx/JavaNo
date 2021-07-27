@@ -24,7 +24,7 @@ public class Server implements Serializable {
     public Server() {
         try {
             p = new Partie(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error occured when create a Partie");
             e.printStackTrace();
             System.exit(-1);
@@ -49,27 +49,27 @@ public class Server implements Serializable {
             f.setVisible(true);
             new Thread(() -> {
                 while (true) {
-
                     Socket s = null;
                     try {
-                        System.out.println("recu socket");
                         s = serverSocket.accept();
+                        System.out.println("recu socket");
                         System.out.println("Created thread");
                         System.out.println("A new client is connected : " + s);
                         SerialOOS oos = new SerialOOS(s.getOutputStream());
                         SerialOIS ois = new SerialOIS(s.getInputStream());
                         System.out.println("Assigning new thread for this client");
 
-                        // create a new thread object
+
                         ClientHandler ct = new ClientHandler(oos, ois, p);
                         clients.add(ct);
 
                         // Invoking the start() method
                         ct.start();
-                        while (!ct.isInterrupted()) {
-                        }
-                        System.out.println("client : " + ct.joueur.getNom() + " disconnected ");
-                        clients.remove(ct);
+                            /*while (!ct.isInterrupted()) {
+                            }
+                            System.out.println("client : " + ct.joueur.getNom() + " disconnected ");
+                            clients.remove(ct);*/
+
 
                     } catch (Exception e) {
                         /*try {
@@ -78,6 +78,7 @@ public class Server implements Serializable {
                             exception.printStackTrace();
                         }*/
                         e.printStackTrace();
+                        System.exit(-1);
                     }
                 }
 
@@ -128,11 +129,11 @@ class ClientHandler extends Thread implements Serializable {
             System.err.println("ERROR WITH INSTANCIATION OF A CLIENT");
             this.stop();
         }
+        ActionHandler actionHandler = new ActionHandler("reachtest", null);
         while (true) {
             try {
-                ActionHandler actionHandler = new ActionHandler("reachtest", null);
                 send(actionHandler);
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Client disconnected because of error");
@@ -150,14 +151,11 @@ class ClientHandler extends Thread implements Serializable {
             oos.writeObject(actionHandler);
         } catch (IOException exception) {
             switch (action) {
-                case "reachtest":
-                    System.out.println("A client [" + this.joueur.getNom() + "] has lost connection");
-                    this.p.supprimerJoueur(this.joueur);
-                    this.stop();
-                default:
-                    exception.printStackTrace();
-                    this.stop();
+                case "reachtest" -> System.out.println("A client [" + this.joueur.getNom() + "] has lost connection");
+                default -> System.err.println("Can't send actionhandler, disconnecting");
             }
+            this.p.supprimerJoueur(this.joueur);
+            this.stop();
         }
     }
 }

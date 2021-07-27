@@ -1,5 +1,6 @@
 package fr.arnoux23u.javano.game;
 
+import fr.arnoux23u.javano.cards.Cartes;
 import fr.arnoux23u.javano.game.utils.Carte;
 import fr.arnoux23u.javano.network.Server;
 
@@ -50,7 +51,10 @@ public class Partie extends Observable implements Serializable {
                 indice++;
             }
         }
-        posees.add(pioche.remove(0));
+        do
+            posees.add(pioche.remove(0));
+        while (posees.get(posees.size()-1).type != Cartes.NORMAL);
+
         if (s != null)
             s.sendToAllClients(this);
     }
