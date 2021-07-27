@@ -29,10 +29,11 @@ public class ClientPanel extends JPanel {
         g2d.setFont(new Font("Arial", Font.PLAIN, 40));
         g2d.drawString("Name : " + j.getNom(), 100, 100);
         ArrayList<Carte> deck = j.getCartes();
-        ArrayList<Carte> posees = p.getPosees();
+
         int cardsnb = deck.size();
         System.out.println("Repaint : Player a " + cardsnb + " cartes dans son paquet");
         if (cardsnb > 0) {
+            ArrayList<Carte> posees = p.getPosees();
             int tailledeck = (cardsnb * (w / 9)) + (10 * (cardsnb - 1));
             int tailleespacestotaux = ((cardsnb - 1) * (w / 40));
             final int taillecarte = (tailledeck - tailleespacestotaux) / cardsnb;
