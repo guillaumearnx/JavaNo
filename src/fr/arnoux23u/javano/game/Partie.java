@@ -1,6 +1,7 @@
 package fr.arnoux23u.javano.game;
 
 import fr.arnoux23u.javano.cards.Cartes;
+import fr.arnoux23u.javano.datatransfer.ActionHandler;
 import fr.arnoux23u.javano.game.utils.Carte;
 import fr.arnoux23u.javano.network.Server;
 
@@ -8,9 +9,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Observable;
+import java.util.*;
 
 public class Partie extends Observable implements Serializable {
 
@@ -21,6 +20,7 @@ public class Partie extends Observable implements Serializable {
     private final ArrayList<Joueur> joueurs;
     private Joueur actualPlayer;
     private Server s;
+    private boolean enCours;
 
     public Partie(Server s) throws IOException {
         this.s = s;
@@ -53,7 +53,7 @@ public class Partie extends Observable implements Serializable {
         }
         do
             posees.add(pioche.remove(0));
-        while (posees.get(posees.size()-1).type != Cartes.NORMAL);
+        while (posees.get(posees.size() - 1).type != Cartes.NORMAL);
 
         if (s != null)
             s.sendToAllClients(this);
@@ -244,5 +244,57 @@ public class Partie extends Observable implements Serializable {
             }
         }
         return false;
+    }
+
+    public void lancer() {
+        enCours = true;
+        distribuer();
+        setChanged();
+        notifyObservers();
+        /*while (enCours) {
+            int indice = 0;
+            actualPlayer = joueurs.get(indice);
+            Joueur actualPlayerCopy = actualPlayer;
+            /*Timer t = new Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (actualPlayer.equals(actualPlayerCopy)) {
+                        getNextJoueur(indice);
+                        System.out.println("PD");
+                    }
+
+
+                }
+            }, 1000 * 5, 1000 * 5);
+        ActionHandler ah = s.getNextAc
+        }*/
+    }
+
+    private void getNextJoueur(int indice) {
+        System.out.println("Actual player is : "+actualPlayer.getNom());
+        int nbj = joueurs.size() - 1;
+        indice++;
+        System.out.println("add 1 to queue");
+        if (indice > nbj) {
+            indice = 0;
+            System.out.println("end of queue, restart list at 0");
+        }
+        actualPlayer = joueurs.get(indice);
+        System.out.println("new player is : "+actualPlayer.getNom());
+    }
+
+    public void arreter() {
+        enCours = false;
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean isEnCours() {
+        return enCours;
+    }
+
+    public Joueur getActualPlayer() {
+        return actualPlayer;
     }
 }
