@@ -105,6 +105,7 @@ public class Client {
     }
 
     public boolean poserCarte(Carte c){
+
         if(p.getPioche().remove(c))
             p.getPosees().add(c);
         return true;

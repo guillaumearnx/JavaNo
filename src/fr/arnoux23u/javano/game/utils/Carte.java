@@ -4,7 +4,6 @@ import fr.arnoux23u.javano.cards.Cartes;
 import fr.arnoux23u.javano.datatransfer.SerialImage;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import static fr.arnoux23u.javano.game.Partie.getNameFromColor;
 /**
  * Classe modelisant une carte
  */
-public class Carte implements Serializable  {
+public class Carte implements Serializable {
 
     private static final long serialVersionUID = 45L;
     public static final String assetsDirectory = "src" + File.separator + "fr/arnoux23u/javano/cards" + File.separator;
@@ -83,5 +82,4 @@ public class Carte implements Serializable  {
     public boolean isChoosed() {
         return this.choosed != null;
     }
-
 }

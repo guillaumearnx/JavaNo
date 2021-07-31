@@ -47,6 +47,7 @@ public class Launcher extends JPanel {
             setFont(font);
             addActionListener(e -> {
                 parent.dispose();
+
                 if (server.isSelected()) {
                     /*JFrame f = new JFrame();
                     f.setTitle("JavaNO - Server");
@@ -57,9 +58,11 @@ public class Launcher extends JPanel {
                     f.pack();
                     f.setVisible(true);*/
                     new Server();
+
                 }else {
                     new Client(name.getText());
                 }
+
             });
         }}, BorderLayout.SOUTH);
     }
