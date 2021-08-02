@@ -4,8 +4,8 @@ import fr.arnoux23u.javano.datatransfer.ActionHandler;
 import fr.arnoux23u.javano.datatransfer.SerialOIS;
 import fr.arnoux23u.javano.datatransfer.SerialOOS;
 import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.game.Partie;
-import fr.arnoux23u.javano.panels.ServerPanel;
+import fr.arnoux23u.javano.mvc.model.Partie;
+import fr.arnoux23u.javano.mvc.panels.ServerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,14 +89,6 @@ public class Server implements Serializable {
         }
 
     }
-
-
-    public void sendToAllClients(Partie p) {
-        for (ClientHandler c : clients) {
-            c.send(new ActionHandler("repaint", p));
-        }
-    }
-
 }
 
 class ClientHandler extends Thread implements Serializable {

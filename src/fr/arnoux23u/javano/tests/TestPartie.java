@@ -1,10 +1,8 @@
 package fr.arnoux23u.javano.tests;
 
-import fr.arnoux23u.javano.cards.Cartes;
 import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.game.Partie;
-import fr.arnoux23u.javano.game.utils.Carte;
-import org.junit.Before;
+import fr.arnoux23u.javano.mvc.model.Partie;
+import fr.arnoux23u.javano.game.Carte;
 import org.junit.Test;
 
 import java.awt.*;

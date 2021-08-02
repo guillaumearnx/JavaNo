@@ -3,8 +3,9 @@ package fr.arnoux23u.javano.network;
 import fr.arnoux23u.javano.datatransfer.ActionHandler;
 import fr.arnoux23u.javano.datatransfer.SerialSocket;
 import fr.arnoux23u.javano.game.*;
-import fr.arnoux23u.javano.game.utils.Carte;
-import fr.arnoux23u.javano.panels.ClientPanel;
+import fr.arnoux23u.javano.game.Carte;
+import fr.arnoux23u.javano.mvc.model.Partie;
+import fr.arnoux23u.javano.mvc.panels.ClientPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,8 @@ public class Client {
                 e.printStackTrace();
             }
             //FRAME
-            ClientPanel cp = new ClientPanel(this, name);
+            ClientPanel cp = new ClientPanel(this);
+            p.addObserver(cp);
             JFrame f = new JFrame();
             f.setTitle("JavaNo - Client");
             cp.setPreferredSize(new Dimension(1400, 800));
@@ -57,7 +59,7 @@ public class Client {
 
             // the following loop performs the exchange of
             // information between client and client handler
-            new Thread(() -> {
+            /*new Thread(() -> {
                 System.out.println("Client : " + name + " started..");
                 while (true) {
                     try {
@@ -82,7 +84,7 @@ public class Client {
                         System.exit(-1);
                     }
                 }
-            }).start();
+            }).start();*/
             // closing resources
             /*dis.close();
             dos.close();*/
@@ -103,9 +105,9 @@ public class Client {
         return j;
     }
 
-    public boolean poserCarte(Carte c){
+    public boolean poserCarte(Carte c) {
 
-        if(p.getPioche().remove(c))
+        if (p.getPioche().remove(c))
             p.getPosees().add(c);
         return true;
     }
