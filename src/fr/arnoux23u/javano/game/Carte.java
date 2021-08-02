@@ -1,6 +1,6 @@
-package fr.arnoux23u.javano.game.utils;
+package fr.arnoux23u.javano.game;
 
-import fr.arnoux23u.javano.cards.Cartes;
+import fr.arnoux23u.javano.cards.TypesCartes;
 import fr.arnoux23u.javano.datatransfer.SerialImage;
 
 import javax.imageio.ImageIO;
@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import static fr.arnoux23u.javano.game.Partie.getNameFromColor;
+import static fr.arnoux23u.javano.mvc.model.Partie.getNameFromColor;
 
 /**
  * Classe modelisant une carte
@@ -27,7 +27,7 @@ public class Carte implements Serializable {
 
     public final SerialImage image;
 
-    public Cartes type;
+    public TypesCartes type;
 
     private boolean special;
 
@@ -36,23 +36,23 @@ public class Carte implements Serializable {
         this.value = value;
         switch (value) {
             case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> {
-                this.type = Cartes.NORMAL;
+                this.type = TypesCartes.NORMAL;
                 this.special = false;
             }
             case 92 -> {
-                this.type = Cartes.ADD;
+                this.type = TypesCartes.ADD;
                 this.special = false;
             }
             case 40, 96 -> {
-                this.type = Cartes.SPECIAL;
+                this.type = TypesCartes.SPECIAL;
                 this.special = false;
             }
             case 94 -> {
-                this.type = Cartes.ADD;
+                this.type = TypesCartes.ADD;
                 this.special = true;
             }
             case 33 -> {
-                this.type = Cartes.SPECIAL;
+                this.type = TypesCartes.SPECIAL;
                 this.special = true;
             }
         }

@@ -1,4 +1,4 @@
-package fr.arnoux23u.javano.panels;
+package fr.arnoux23u.javano.mvc.panels;
 
 import fr.arnoux23u.javano.network.Client;
 import fr.arnoux23u.javano.network.Server;

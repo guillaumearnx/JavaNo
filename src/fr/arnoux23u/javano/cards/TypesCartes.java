@@ -1,6 +1,6 @@
 package fr.arnoux23u.javano.cards;
 
-public enum Cartes {
+public enum TypesCartes {
 
     NORMAL,
     ADD,

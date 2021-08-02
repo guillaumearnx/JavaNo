@@ -1,38 +1,46 @@
-package fr.arnoux23u.javano.panels;
+package fr.arnoux23u.javano.mvc.panels;
 
 import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.game.Partie;
-import fr.arnoux23u.javano.game.utils.Carte;
+import fr.arnoux23u.javano.mvc.model.Partie;
+import fr.arnoux23u.javano.game.Carte;
 import fr.arnoux23u.javano.network.Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ClientPanel extends JPanel {
+public class ClientPanel extends JPanel implements Observer {
 
-
-    private Client client;
+    private Partie p;
+    private Client c;
 
     private ArrayList<Carte> pioche;
     private ArrayList<Carte> deck;
     private int debutdeck;
     private int taillecarte;
 
-    public ClientPanel(Client client, String name) {
-        this.client = client;
+    public ClientPanel() {
         this.setLayout(new BorderLayout());
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        Partie p = client.getPartie();
-        Joueur j = client.getJoueur();
+        //p = client.getPartie();
+        //Joueur j = client.getJoueur();
         this.removeAll();
+        /////////////////////////////////////////////////////////////////////////////////////
+        //
+        //
+        //
+        //
+        // ----------------------------------------------------------------------------------
+        //
+        //
+        //
+        /////////////////////////////////////////////////////////////////////////////////////
         deck = j.getCartes();
-
-
         Graphics2D g2d = (Graphics2D) g;
         final int w = getWidth();
         final int h = getHeight();
@@ -57,22 +65,29 @@ public class ClientPanel extends JPanel {
             g2d.setFont(new Font("Arial", Font.PLAIN, 10));
             for (int i = 0; i < cardsnb; i++) {
                 Carte c = deck.get(i);
-                g2d.drawImage(c.image.toImage(), debutdeck + i * taillecarte, getHeight() - getHeight() / 5, taillecarte, taillecarte + (taillecarte / 2), null);
+                Point start = new Point(debutdeck + taillespaceindiv / 3 + (i * (taillecarte + taillespaceindiv)), getHeight() - getHeight() / 5);
+                Point end = new Point(taillecarte, taillecarte + (taillecarte / 2));
+                g2d.drawImage(c.image.toImage(), start.x , start.y, end.x, end.y, null);
             }
-            g2d.drawImage(posees.get(0).image.toImage(), w / 2 - (taillecarte / 2), h / 2, taillecarte, taillecarte + (taillecarte / 2), null);
+            for (int i = 0; i < posees.size(); i++) {
+                Carte c = posees.get(i);
+                g2d.drawImage(c.image.toImage(), w / 2 - (taillecarte / 2) + (i * 20), h / 2, taillecarte, taillecarte + (taillecarte / 2), null);
+            }
         }
-        //ACTU
-
+        //ACTU*/
 
 
     }
 
     private ArrayList<Carte> getLastPioche(Partie p) {
         ArrayList<Carte> temp = p.getPosees();
-        return new ArrayList<Carte>() {{
-            add(temp.get(temp.size() - 1));
-            add(temp.get(temp.size() - 2));
-            add(temp.get(temp.size() - 3));
+        return new ArrayList<>() {{
+            for (int i = 1; i < 4; i++) {
+                try {
+                    add(temp.get(temp.size() - i));
+                } catch (IndexOutOfBoundsException ignored) {
+                }
+            }
         }};
     }
 
@@ -82,5 +97,13 @@ public class ClientPanel extends JPanel {
 
     public int getTaillecarte() {
         return taillecarte;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+         = (Partie) o;
+        System.out.println("*Server update*");
+        p.afficherJoueurs();
+        repaint();
     }
 }

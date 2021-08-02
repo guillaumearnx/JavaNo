@@ -1,8 +1,8 @@
-package fr.arnoux23u.javano.game;
+package fr.arnoux23u.javano.mvc.model;
 
-import fr.arnoux23u.javano.cards.Cartes;
-import fr.arnoux23u.javano.datatransfer.ActionHandler;
-import fr.arnoux23u.javano.game.utils.Carte;
+import fr.arnoux23u.javano.cards.TypesCartes;
+import fr.arnoux23u.javano.game.Joueur;
+import fr.arnoux23u.javano.game.Carte;
 import fr.arnoux23u.javano.network.Server;
 
 import java.awt.*;
@@ -53,7 +53,7 @@ public class Partie extends Observable implements Serializable {
         }
         do
             posees.add(pioche.remove(0));
-        while (posees.get(posees.size() - 1).type != Cartes.NORMAL);
+        while (posees.get(posees.size() - 1).type != TypesCartes.NORMAL);
 
         if (s != null)
             s.sendToAllClients(this);

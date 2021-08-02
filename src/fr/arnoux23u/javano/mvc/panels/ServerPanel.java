@@ -1,7 +1,7 @@
-package fr.arnoux23u.javano.panels;
+package fr.arnoux23u.javano.mvc.panels;
 
 import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.game.Partie;
+import fr.arnoux23u.javano.mvc.model.Partie;
 import fr.arnoux23u.javano.network.Server;
 
 import javax.swing.*;
