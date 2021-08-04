@@ -1,18 +1,20 @@
 package fr.arnoux23u.javano.game;
 
-import fr.arnoux23u.javano.game.utils.Carte;
+import fr.arnoux23u.javano.cards.Carte;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Joueur implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 42L;
 
-    private String nom;
+    private final String nom;
 
-    private ArrayList<Carte> paquet;
+    private final ArrayList<Carte> paquet;
 
     public Joueur(String nom) {
         this.nom = nom;
@@ -36,10 +38,5 @@ public class Joueur implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Joueur joueur)) return false;
         return Objects.equals(nom, joueur.nom);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nom);
     }
 }

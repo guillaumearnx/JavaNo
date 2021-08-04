@@ -2,7 +2,7 @@ package fr.arnoux23u.javano.tests;
 
 import fr.arnoux23u.javano.game.Joueur;
 import fr.arnoux23u.javano.mvc.model.Partie;
-import fr.arnoux23u.javano.game.Carte;
+import fr.arnoux23u.javano.cards.Carte;
 import org.junit.Test;
 
 import java.awt.*;
@@ -11,13 +11,14 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings("DuplicatedCode")
 public class TestPartie {
 
     private Partie p;
 
     @Test
     public void test00_creationPartie() throws IOException {
-        p = new Partie(null);
+        p = new Partie();
         //Partie deja cree par before
         assertEquals("Devrait contenir 108 cartes", 108, p.getPioche().size());
         assertEquals("Posees devraient etre vides", 0, p.getPosees().size());
@@ -25,7 +26,7 @@ public class TestPartie {
 
     @Test
     public void test01_distribution() throws IOException {
-        p = new Partie(null, new ArrayList<Joueur>() {{
+        p = new Partie(new ArrayList<Joueur>() {{
             add(new Joueur("Player1234"));
             add(new Joueur("Player1233"));
             add(new Joueur("Player1235"));
@@ -42,7 +43,7 @@ public class TestPartie {
     }
 
     @Test
-    public void test02_peutPoser_carteNormale() throws IOException {
+    public void test02_peutPoser_carteNormale() {
         Carte rouge4 = new Carte(Color.RED, 4);
         Carte jaune4 = new Carte(Color.YELLOW, 4);
         Carte rouge5 = new Carte(Color.RED, 5);
@@ -66,7 +67,7 @@ public class TestPartie {
     }
 
     @Test
-    public void test03_peutPoser_plusDeux() throws IOException {
+    public void test03_peutPoser_plusDeux() {
         Carte plus2jaune = new Carte(Color.YELLOW, 92);
         Carte plus2jaune2 = new Carte(Color.YELLOW, 92);
         Carte plus2vert = new Carte(Color.GREEN, 92);
@@ -102,7 +103,7 @@ public class TestPartie {
     }
 
     @Test
-    public void test04_peutPoser_plusQuatre() throws IOException {
+    public void test04_peutPoser_plusQuatre() {
         Carte plusquatre = new Carte(Color.BLACK, 94);
         Carte plusquatre2 = new Carte(Color.BLACK, 94);
         Carte plus2vert = new Carte(Color.GREEN, 92);
@@ -135,7 +136,7 @@ public class TestPartie {
 
 
     @Test
-    public void test05_peutPoser_reverse() throws IOException {
+    public void test05_peutPoser_reverse() {
         Carte reverse = new Carte(Color.YELLOW, 96);
         Carte rouge4 = new Carte(Color.RED, 4);
         Carte jaune4 = new Carte(Color.YELLOW, 4);
@@ -162,7 +163,7 @@ public class TestPartie {
     }
 
     @Test
-    public void test06_peutPoser_skip() throws IOException {
+    public void test06_peutPoser_skip() {
         Carte skip = new Carte(Color.YELLOW, 40);
         Carte rouge4 = new Carte(Color.RED, 4);
         Carte jaune4 = new Carte(Color.YELLOW, 4);
@@ -189,7 +190,7 @@ public class TestPartie {
     }
 
     @Test
-    public void test07_peutPoser_color() throws IOException {
+    public void test07_peutPoser_color() {
         Carte color = new Carte(Color.BLACK, 33);
         Carte rouge4 = new Carte(Color.RED, 4);
         Carte plus2jaune = new Carte(Color.YELLOW, 92);

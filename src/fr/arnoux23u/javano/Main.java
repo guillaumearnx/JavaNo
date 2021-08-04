@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-
         //Creation de la fenetre
         JFrame f = new JFrame("JavaNO - Launcher");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,8 +1,7 @@
 package fr.arnoux23u.javano.mvc.panels;
 
-import fr.arnoux23u.javano.game.Joueur;
 import fr.arnoux23u.javano.mvc.model.Partie;
-import fr.arnoux23u.javano.game.Carte;
+import fr.arnoux23u.javano.cards.Carte;
 import fr.arnoux23u.javano.network.Client;
 
 import javax.swing.*;
@@ -13,15 +12,15 @@ import java.util.Observer;
 
 public class ClientPanel extends JPanel implements Observer {
 
-    private Partie p;
-    private Client c;
+    private final Client c;
 
     private ArrayList<Carte> pioche;
     private ArrayList<Carte> deck;
     private int debutdeck;
     private int taillecarte;
 
-    public ClientPanel() {
+    public ClientPanel(Client c) {
+        this.c = c;
         this.setLayout(new BorderLayout());
     }
 
@@ -101,9 +100,7 @@ public class ClientPanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-         = (Partie) o;
-        System.out.println("*Server update*");
-        p.afficherJoueurs();
-        repaint();
+        c.setPartie((Partie) o);
+        c.envoiServeur();
     }
 }

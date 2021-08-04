@@ -11,8 +11,8 @@ public class Launcher extends JPanel {
 
     public Launcher(JFrame parent) {
         JTextField name = new JTextField();
-        name.setText("Player"+String.format("%04d", new Random().nextInt(10000)));
-        name.setPreferredSize(new Dimension(200,20));
+        name.setText("Player" + String.format("%04d", new Random().nextInt(10000)));
+        name.setPreferredSize(new Dimension(200, 20));
         name.setHorizontalAlignment(SwingConstants.CENTER);
         this.setLayout(new BorderLayout());
         Font font = new Font("Arial", Font.PLAIN, 20);
@@ -38,7 +38,7 @@ public class Launcher extends JPanel {
         }};
         choice.add(server);
         choice.add(client);
-        this.add(new JPanel(){{
+        this.add(new JPanel() {{
             setLayout(new BorderLayout());
             add(choice, BorderLayout.NORTH);
             add(name, BorderLayout.SOUTH);
@@ -47,22 +47,10 @@ public class Launcher extends JPanel {
             setFont(font);
             addActionListener(e -> {
                 parent.dispose();
-
-                if (server.isSelected()) {
-                    /*JFrame f = new JFrame();
-                    f.setTitle("JavaNO - Server");
-                    sp.setPreferredSize(new Dimension(1400, 800));
-                    f.setContentPane(sp);
-                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    f.requestFocusInWindow();
-                    f.pack();
-                    f.setVisible(true);*/
+                if (server.isSelected())
                     new Server();
-
-                }else {
+                else
                     new Client(name.getText());
-                }
-
             });
         }}, BorderLayout.SOUTH);
     }
