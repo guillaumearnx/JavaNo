@@ -1,4 +1,4 @@
-package fr.arnoux23u.javano.cards;
+package main.java.game.cards;
 
 public enum TypesCartes {
 

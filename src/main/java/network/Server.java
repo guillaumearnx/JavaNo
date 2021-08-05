@@ -1,11 +1,11 @@
-package fr.arnoux23u.javano.network;
+package main.java.network;
 
-import fr.arnoux23u.javano.datatransfer.ActionHandler;
-import fr.arnoux23u.javano.datatransfer.SerialOIS;
-import fr.arnoux23u.javano.datatransfer.SerialOOS;
-import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.mvc.model.Partie;
-import fr.arnoux23u.javano.mvc.panels.ServerPanel;
+import main.java.datatransfer.ActionHandler;
+import main.java.datatransfer.SerialOIS;
+import main.java.datatransfer.SerialOOS;
+import main.java.game.Joueur;
+import main.java.mvc.model.Partie;
+import main.java.mvc.panels.ServerPanel;
 
 import javax.swing.*;
 import java.awt.*;

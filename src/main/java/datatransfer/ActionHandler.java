@@ -1,4 +1,4 @@
-package fr.arnoux23u.javano.datatransfer;
+package main.java.datatransfer;
 
 import java.io.Serializable;
 

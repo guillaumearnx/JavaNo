@@ -1,4 +1,4 @@
-package fr.arnoux23u.javano.datatransfer;
+package main.java.datatransfer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.*;

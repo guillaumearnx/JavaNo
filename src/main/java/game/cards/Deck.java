@@ -1,32 +1,29 @@
-package fr.arnoux23u.javano.mvc.panels;
-
-import fr.arnoux23u.javano.mvc.model.Partie;
-import fr.arnoux23u.javano.cards.Carte;
-import fr.arnoux23u.javano.network.Client;
+package main.java.game.cards;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
-public class ClientPanel extends JPanel implements Observer {
+public class Deck extends JPanel {
 
-    private final Client c;
+    private final ArrayList<Carte> cards;
 
-    private ArrayList<Carte> pioche;
-    private ArrayList<Carte> deck;
-    private int debutdeck;
-    private int taillecarte;
+    public Deck(){
+        this.cards = new ArrayList<Carte>();
+    }
 
-    public ClientPanel(Client c) {
-        this.c = c;
-        this.setLayout(new BorderLayout());
+    public void piocher(Carte c){
+        cards.add(c);
+    }
+
+    public ArrayList<Carte> getCartes(){
+        return cards;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        //p = client.getPartie();
+        super.paintComponent(g);
+        /*//p = client.getPartie();
         //Joueur j = client.getJoueur();
         this.removeAll();
         /////////////////////////////////////////////////////////////////////////////////////
@@ -76,31 +73,5 @@ public class ClientPanel extends JPanel implements Observer {
         //ACTU*/
 
 
-    }
-
-    private ArrayList<Carte> getLastPioche(Partie p) {
-        ArrayList<Carte> temp = p.getPosees();
-        return new ArrayList<>() {{
-            for (int i = 1; i < 4; i++) {
-                try {
-                    add(temp.get(temp.size() - i));
-                } catch (IndexOutOfBoundsException ignored) {
-                }
-            }
-        }};
-    }
-
-    public int getDebutdeck() {
-        return debutdeck;
-    }
-
-    public int getTaillecarte() {
-        return taillecarte;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        c.setPartie((Partie) o);
-        c.envoiServeur();
     }
 }

@@ -1,9 +1,9 @@
-package fr.arnoux23u.javano.network;
+package main.java.network;
 
-import fr.arnoux23u.javano.datatransfer.SerialSocket;
-import fr.arnoux23u.javano.game.*;
-import fr.arnoux23u.javano.mvc.model.Partie;
-import fr.arnoux23u.javano.mvc.panels.ClientPanel;
+import main.java.datatransfer.SerialSocket;
+import main.java.game.*;
+import main.java.mvc.model.Partie;
+import main.java.mvc.panels.ClientPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,6 @@ public class Client {
             //FRAME
             ClientPanel cp = new ClientPanel(this);
             creerFenetre(cp);
-            p.addObserver(cp);
             /*new Thread(() -> {
                 System.out.println("Client : " + name + " started..");
                 while (true) {
@@ -74,6 +73,13 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    /*
+    Quand lecture de partie,
+    this.p = read;
+    p.
+     */
+
 
     private void creerFenetre(ClientPanel cp) {
         JFrame f = new JFrame();

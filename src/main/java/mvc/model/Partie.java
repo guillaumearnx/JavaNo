@@ -1,12 +1,10 @@
-package fr.arnoux23u.javano.mvc.model;
+package main.java.mvc.model;
 
-import fr.arnoux23u.javano.cards.TypesCartes;
-import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.cards.Carte;
-import fr.arnoux23u.javano.network.Server;
+import main.java.game.cards.TypesCartes;
+import main.java.game.Joueur;
+import main.java.game.cards.Carte;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;

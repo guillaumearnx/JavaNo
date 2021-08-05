@@ -1,6 +1,6 @@
-package fr.arnoux23u.javano;
+package main.java;
 
-import fr.arnoux23u.javano.mvc.panels.Launcher;
+import main.java.mvc.panels.Launcher;
 
 import javax.swing.*;
 import java.awt.*;

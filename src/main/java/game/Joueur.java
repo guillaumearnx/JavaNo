@@ -1,6 +1,7 @@
-package fr.arnoux23u.javano.game;
+package main.java.game;
 
-import fr.arnoux23u.javano.cards.Carte;
+import main.java.game.cards.Carte;
+import main.java.game.cards.Deck;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,19 +15,19 @@ public class Joueur implements Serializable {
 
     private final String nom;
 
-    private final ArrayList<Carte> paquet;
+    private final Deck deck;
 
     public Joueur(String nom) {
         this.nom = nom;
-        paquet = new ArrayList<Carte>();
+         deck = new Deck();
     }
 
     public void piocher(Carte pioche) {
-        paquet.add(pioche);
+        deck.piocher(pioche);
     }
 
     public ArrayList<Carte> getCartes() {
-        return paquet;
+        return deck.getCartes();
     }
 
     public String getNom() {
@@ -38,5 +39,9 @@ public class Joueur implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Joueur joueur)) return false;
         return Objects.equals(nom, joueur.nom);
+    }
+
+    public Deck getDeck() {
+        return deck;
     }
 }

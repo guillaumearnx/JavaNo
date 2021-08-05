@@ -1,6 +1,6 @@
-package fr.arnoux23u.javano.cards;
+package main.java.game.cards;
 
-import fr.arnoux23u.javano.datatransfer.SerialImage;
+import main.java.datatransfer.SerialImage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
-import static fr.arnoux23u.javano.mvc.model.Partie.getNameFromColor;
+import static main.java.mvc.model.Partie.getNameFromColor;
 
 /**
  * Classe modelisant une carte
@@ -19,7 +19,7 @@ public class Carte implements Serializable {
     @Serial
     private static final long serialVersionUID = 45L;
 
-    public static final String assetsDirectory = "src" + File.separator + "fr/arnoux23u/javano/cards" + File.separator;
+    public static final String assetsDirectory = "src" + File.separator + "main/java/game/cards" + File.separator;
 
     public final Color color;
 

@@ -1,9 +1,8 @@
-package fr.arnoux23u.javano.mvc.panels;
+package main.java.mvc.panels;
 
-import fr.arnoux23u.javano.datatransfer.ActionHandler;
-import fr.arnoux23u.javano.game.Joueur;
-import fr.arnoux23u.javano.mvc.model.Partie;
-import fr.arnoux23u.javano.network.Server;
+import main.java.game.Joueur;
+import main.java.mvc.model.Partie;
+import main.java.network.Server;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,7 +1,7 @@
-package fr.arnoux23u.javano.mvc.panels;
+package main.java.mvc.panels;
 
-import fr.arnoux23u.javano.network.Client;
-import fr.arnoux23u.javano.network.Server;
+import main.java.network.Client;
+import main.java.network.Server;
 
 import javax.swing.*;
 import java.awt.*;
