@@ -26,15 +26,32 @@ public class Client {
             System.out.println("Connected to server | Client -> " + name);
             oos.writeObject(name);
             sc = new Scanner(System.in);
-            while (true) {
-                System.out.println("Enter a command : ");
-                String command = sc.nextLine();
-                oos.writeObject(command);
-                if (command.equals("exit")) {
-                    break;
-                }
 
-            }
+            //SEND
+            new Thread(() -> {
+                while (true) {
+                    String input = sc.nextLine();
+                    if (input.equals("exit")) {
+                        break;
+                    }
+                    try {
+                        oos.writeObject(input);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+            //RECEIVE
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        System.out.println(ois.readObject());
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         } catch (IOException e) {
             e.printStackTrace();
         }

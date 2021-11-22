@@ -64,6 +64,7 @@ class ClientHandler extends Thread {
     private final Server server;
     private final Socket socket;
     private String name;
+    private final Scanner sc = new Scanner(System.in);
 
     // Constructor
     public ClientHandler(Socket socket, SerialOOS oos, SerialOIS ois, Server s) {
@@ -85,13 +86,32 @@ class ClientHandler extends Thread {
         System.out.println("[CLIENT " + name + "] - Thread started");
         server.sendToAll("[SERVER] - " + name + " is connected");
 
-        while (true) {
-            try {
-                System.out.println("[CLIENT " + name + "] : " + ois.readObject().toString());
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+        //SEND
+        new Thread(() -> {
+            while (true) {
+                String input = sc.nextLine();
+                if (input.equals("exit")) {
+                    break;
+                }
+                try {
+                    oos.writeObject(input);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        }).start();
+
+        //RECEIVE
+        new Thread(() -> {
+            while (true) {
+                try {
+                    System.out.println("[CLIENT " + name + "] : " + ois.readObject().toString());
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     public void send(String msg) {
