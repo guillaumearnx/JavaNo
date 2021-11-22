@@ -2,8 +2,6 @@ package network;
 
 import data.*;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,39 +30,36 @@ public class Server {
     }
 
     private void createThread(ServerSocket serverSocket) {
-        new Thread(() -> {
-            while (true) {
-                Socket s;
-                try {
-                    s = serverSocket.accept();
-                    System.out.println("recu socket");
-                    System.out.println("Created thread");
-                    System.out.println("A new client is connected : " + s);
-                    SerialOOS oos = new SerialOOS(s.getOutputStream());
-                    SerialOIS ois = new SerialOIS(s.getInputStream());
-                    System.out.println("Assigning new thread for this client");
-                    ClientHandler ct = new ClientHandler(oos, ois, this);
-                    clients.add(ct);
-                    ct.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.exit(-1);
-                }
+        while (true) {
+            try {
+                Socket s = serverSocket.accept();
+                System.out.println("Created thread");
+                System.out.println("A new client is connected : " + s);
+                SerialOOS oos = new SerialOOS(s.getOutputStream());
+                SerialOIS ois = new SerialOIS(s.getInputStream());
+                ClientHandler ct = new ClientHandler(s, oos, ois, this);
+                clients.add(ct);
+                ct.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(-1);
             }
-        }).start();
+        }
     }
 
 }
 
-class ClientHandler extends Thread implements Serializable {
+class ClientHandler extends Thread {
 
     final SerialOOS oos;
     final SerialOIS ois;
 
     private final Server server;
+    private final Socket socket;
 
     // Constructor
-    public ClientHandler(SerialOOS oos, SerialOIS ois, Server s) {
+    public ClientHandler(Socket socket, SerialOOS oos, SerialOIS ois, Server s) {
+        this.socket = socket;
         this.oos = oos;
         this.server = s;
         this.ois = ois;
@@ -72,7 +67,7 @@ class ClientHandler extends Thread implements Serializable {
 
     @Override
     public void run() {
-        System.out.println("Thread started");
+        System.out.println("[CLIENT HANDLER] - Thread started");
     }
 
 }
