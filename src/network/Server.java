@@ -12,6 +12,8 @@ import java.util.*;
  */
 public class Server {
 
+    public static int tour = 0;
+
     private final ArrayList<ClientHandler> clients;
 
     Scanner sc = new Scanner(System.in);
@@ -23,7 +25,6 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             System.out.println("Serveur démarré et écoute sur le port : " + serverSocket.getLocalPort());
-
             while (true) {
                 try {
                     Socket s = serverSocket.accept();
@@ -47,6 +48,12 @@ public class Server {
         }
     }
 
+    public void sendToAll(String msg) {
+        for (ClientHandler c : clients) {
+            c.send(msg);
+        }
+    }
+
 }
 
 class ClientHandler extends Thread {
@@ -56,6 +63,7 @@ class ClientHandler extends Thread {
 
     private final Server server;
     private final Socket socket;
+    private String name;
 
     // Constructor
     public ClientHandler(Socket socket, SerialOOS oos, SerialOIS ois, Server s) {
@@ -67,14 +75,30 @@ class ClientHandler extends Thread {
 
     @Override
     public void run() {
-        System.out.println("[CLIENT HANDLER] - Thread started");
+        //LANCEE QUAND UN CLIENT SE CONNECTE
+        try {
+            name = String.valueOf(ois.readObject());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("[CLIENT " + name + "] - Thread started");
+        server.sendToAll("[SERVER] - " + name + " is connected");
+
         while (true) {
             try {
-                System.out.println(ois.readObject().toString());
+                System.out.println("[CLIENT " + name + "] : " + ois.readObject().toString());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    public void send(String msg) {
+        try {
+            oos.writeObject(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -24,6 +24,7 @@ public class Client {
             ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
             System.out.println("Connected to server | Client -> " + name);
+            oos.writeObject(name);
             sc = new Scanner(System.in);
             while (true) {
                 System.out.println("Enter a command : ");
