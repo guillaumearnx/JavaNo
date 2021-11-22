@@ -68,6 +68,8 @@ class ClientHandler extends Thread {
     @Override
     public void run() {
         System.out.println("[CLIENT HANDLER] - Thread started");
+        while (true) {
+        }
     }
 
 }
