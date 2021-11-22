@@ -14,6 +14,8 @@ public class Server {
 
     private final ArrayList<ClientHandler> clients;
 
+    Scanner sc = new Scanner(System.in);
+
     public final int PORT = 6587;
 
     public Server() {
@@ -21,29 +23,27 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             System.out.println("Serveur démarré et écoute sur le port : " + serverSocket.getLocalPort());
-            createThread(serverSocket);
-            System.out.println("Thread for accpet connections created");
+
+            while (true) {
+                try {
+                    Socket s = serverSocket.accept();
+                    System.out.println("Created thread");
+                    System.out.println("A new client is connected : " + s);
+                    SerialOOS oos = new SerialOOS(s.getOutputStream());
+                    SerialOIS ois = new SerialOIS(s.getInputStream());
+                    ClientHandler ct = new ClientHandler(s, oos, ois, this);
+                    clients.add(ct);
+                    ct.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(-1);
+                }
+            }
+
+
         } catch (IOException exception) {
             exception.printStackTrace();
             System.exit(-1);
-        }
-    }
-
-    private void createThread(ServerSocket serverSocket) {
-        while (true) {
-            try {
-                Socket s = serverSocket.accept();
-                System.out.println("Created thread");
-                System.out.println("A new client is connected : " + s);
-                SerialOOS oos = new SerialOOS(s.getOutputStream());
-                SerialOIS ois = new SerialOIS(s.getInputStream());
-                ClientHandler ct = new ClientHandler(s, oos, ois, this);
-                clients.add(ct);
-                ct.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.exit(-1);
-            }
         }
     }
 
@@ -69,6 +69,11 @@ class ClientHandler extends Thread {
     public void run() {
         System.out.println("[CLIENT HANDLER] - Thread started");
         while (true) {
+            try {
+                System.out.println(ois.readObject().toString());
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
