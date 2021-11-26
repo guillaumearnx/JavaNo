@@ -1,16 +1,16 @@
 package fr.arnoux23u.javano.mvc;
 
-import game.Player;
+import fr.arnoux23u.javano.mvc.*;
+import fr.arnoux23u.javano.game.Player;
 
 import java.util.*;
-import java.util.Observer;
 
 /**
  * @author arnoux23u
  */
 public class Game implements Model {
 
-    private final List<java.util.Observer> observers;
+    private final List<Observer> observers;
 
     private final List<Player> players;
 
@@ -34,7 +34,7 @@ public class Game implements Model {
     }
 
     @Override
-    public void addObserver(java.util.Observer o) {
+    public void addObserver(Observer o) {
         observers.add(o);
     }
 
