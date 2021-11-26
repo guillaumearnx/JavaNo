@@ -1,4 +1,4 @@
-package mvc;
+package fr.arnoux23u.javano.mvc;
 
 /**
  * Inteface modele

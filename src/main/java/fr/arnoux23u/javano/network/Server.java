@@ -1,11 +1,9 @@
-package network;
+package fr.arnoux23u.javano.network;
 
-import data.*;
-import game.Player;
-import mvc.Game;
-import mvc.views.*;
+import fr.arnoux23u.javano.data.*;
+import fr.arnoux23u.javano.mvc.*;
+import fr.arnoux23u.javano.mvc.views.*;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,20 +30,17 @@ public class Server {
             ServerSocket serverSocket = new ServerSocket(PORT);
 
             //Modele
-            /*game = new Game();
+            game = new Game();
 
-            //Vues
-            new Thread(()->{
-                LaunchPanel launchPanel = new LaunchPanel(game);
-                game.addObserver(launchPanel);
-                JFrame f = new JFrame();
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                f.setTitle("JavaNO - Server");
-                f.setSize(800, 600);
-                f.setContentPane(launchPanel);
-                f.setVisible(true);
-            });*/
+            LaunchPanel launchPanel = new LaunchPanel(game);
+            game.addObserver(launchPanel);
 
+            //Thread for mvc
+            /*new Thread(() -> {
+                launchPanel.launch();
+            }).start();*/
+
+            launchPanel.launch();
 
 
             //Thread
@@ -59,7 +54,6 @@ public class Server {
                     SerialOIS ois = new SerialOIS(s.getInputStream());
                     ClientHandler ct = new ClientHandler(oos, ois, this);
                     clients.add(ct);
-                    new Thread(ct).start();
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.exit(-1);
@@ -77,18 +71,18 @@ public class Server {
         }
     }
 
-    public void removeClient(ClientHandler c) {
+    public synchronized void removeClient(ClientHandler c) {
         clients.remove(c);
         game.removePlayer(c.uuid);
     }
 
-    public Game getGame() {
+    public synchronized Game getGame() {
         return game;
     }
 
 }
 
-class ClientHandler implements Runnable {
+class ClientHandler {
 
     String[] colors = new String[]{"\033[0;32m", "\033[0;33m", "\033[0;34m", "\033[0;35m", "\033[0;36m", "\033[0;37m"};
 
@@ -96,27 +90,27 @@ class ClientHandler implements Runnable {
     final SerialOIS ois;
 
     private final Server server;
-    private ClientInfo data;
     private final String color;
     private String name;
     public final UUID uuid;
-    private final Scanner sc = new Scanner(System.in);
+    private final Scanner scanner;
 
     // Constructor
     public ClientHandler(SerialOOS oos, SerialOIS ois, Server s) {
         uuid = UUID.randomUUID();
         this.oos = oos;
         this.server = s;
+        scanner = new Scanner(System.in);
         this.ois = ois;
         this.color = colors[(int) (Math.random() * colors.length)];
+        run();
     }
 
-    @Override
-    public void run() {
+    private void run() {
         try {
             name = String.valueOf(ois.readObject());
             System.out.println(color + "[CLIENT " + name + "] - Thread started");
-            server.sendToAll("Welcome " + name + " !");
+            //server.sendToAll("Welcome " + name + " !");
             server.getGame().addPlayer(uuid, name);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -125,18 +119,27 @@ class ClientHandler implements Runnable {
         new Thread(() -> {
             try {
                 while (true) {
-                    System.out.println(color + "[CLIENT " + name + "] - Waiting for data");
                     System.out.println(color + "[CLIENT " + name + "] - Received data : " + ois.readObject());
-                    Thread.sleep(100);
-                    server.sendToAll("update");
                 }
-            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                kill();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                while (true) {
+                    String str = scanner.nextLine();
+                    System.out.println(color + "[CLIENT " + name + "] - Sended data : " + str);
+                    oos.writeObject(str);
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
                 kill();
             }
         }).start();
     }
-
 
     public void sendData(Object o) {
         try {
@@ -152,9 +155,10 @@ class ClientHandler implements Runnable {
         return name;
     }
 
-    private void kill(){
-        server.removeClient(this);
+    private void kill() {
+        //server.removeClient(this);
         System.out.println(color + "[CLIENT " + name + "] - Thread stopped");
+
     }
 
 

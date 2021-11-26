@@ -1,4 +1,4 @@
-package game;
+package fr.arnoux23u.javano.game;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package network;
+package fr.arnoux23u.javano.network;
 
-import data.*;
+import fr.arnoux23u.javano.data.SerialSocket;
 
 import java.io.*;
 import java.net.InetAddress;

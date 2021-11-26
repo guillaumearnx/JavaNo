@@ -1,4 +1,4 @@
-package mvc;
+package fr.arnoux23u.javano.mvc;
 
 /**
  * Interface observateur
@@ -10,6 +10,7 @@ public interface Observer {
 
     /**
      * Acutalisation
+     *
      * @param m modele
      */
     void update(Model m);
