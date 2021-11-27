@@ -2,7 +2,8 @@ package fr.arnoux23u.javano.network;
 
 import fr.arnoux23u.javano.data.*;
 import fr.arnoux23u.javano.mvc.*;
-import fr.arnoux23u.javano.mvc.views.*;
+import fr.arnoux23u.javano.mvc.views.ServerView;
+import javafx.application.Application;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,9 +15,9 @@ import java.util.*;
  */
 public class Server {
 
-    public static final String RED = "\033[0;31m";     // RED
+    public static final String RED = "\033[0;31m";
 
-    public static int tour = 0;
+    //public static int tour = 0;
 
     private final ArrayList<ClientHandler> clients;
 
@@ -25,47 +26,39 @@ public class Server {
     private Game game;
 
     public Server() {
-        clients = new ArrayList<ClientHandler>();
+        clients = new ArrayList<>();
         try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
-
-            //Modele
             game = new Game();
-
-            LaunchPanel launchPanel = new LaunchPanel(game);
-            game.addObserver(launchPanel);
-
-            //Thread for mvc
-            /*new Thread(() -> {
-                launchPanel.launch();
-            }).start();*/
-
-            launchPanel.launch();
+            ServerView sv = new ServerView(game);
+            game.addObserver(sv);
 
 
+            ServerSocket serverSocket = new ServerSocket(PORT);
             //Thread
             System.out.println(RED + "Serveur démarré et écoute sur le port : " + serverSocket.getLocalPort());
-            while (true) {
-                try {
-                    Socket s = serverSocket.accept();
-                    System.out.println(RED + "Created thread");
-                    System.out.println(RED + "A new client is connected : " + s);
-                    SerialOOS oos = new SerialOOS(s.getOutputStream());
-                    SerialOIS ois = new SerialOIS(s.getInputStream());
-                    ClientHandler ct = new ClientHandler(oos, ois, this);
-                    clients.add(ct);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.exit(-1);
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Socket s = serverSocket.accept();
+                        System.out.println(RED + "Created thread");
+                        System.out.println(RED + "A new client is connected : " + s);
+                        SerialOOS oos = new SerialOOS(s.getOutputStream());
+                        SerialOIS ois = new SerialOIS(s.getInputStream());
+                        ClientHandler ct = new ClientHandler(oos, ois, this);
+                        clients.add(ct);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.exit(-1);
+                    }
                 }
-            }
+            }).start();
         } catch (IOException exception) {
             exception.printStackTrace();
             System.exit(-1);
         }
     }
 
-    public synchronized void sendToAll(Object o) {
+    /*public synchronized void sendToAll(Object o) {
         for (ClientHandler c : clients) {
             c.sendData(o);
         }
@@ -74,7 +67,7 @@ public class Server {
     public synchronized void removeClient(ClientHandler c) {
         clients.remove(c);
         game.removePlayer(c.uuid);
-    }
+    }*/
 
     public synchronized Game getGame() {
         return game;
