@@ -1,5 +1,5 @@
 # JavaNo
 
-:warning: PROJECT TEMPORARILY ABANDONED
+:x: PROJECT ABANDONED
 
 Uno game multiplayer
